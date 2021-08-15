@@ -1,4 +1,21 @@
-profoc 0.8.0 (Release date: 2021-07-27) This date may change
+profoc 0.8.3 (Release date: 2021-08-15)
+==============
+
+## Changes:
+
+* The `profoc` function was extended:
+  * `regret` can now be passed as an array as before, or as a list, e.g. `list(regret = regret_array, share = 0.2)` if the provided regret should be mixed with the regret calculated by online.
+  * `loss` can also be provided as a list, see above.
+
+* The `batch` function can now minimize an alternative objection function using the quantile weighted CRPS
+  * This weighting scheme can be activated by setting `qw_crps=TRUE`
+  * It defaults to FALSE due to better performance
+  
+### Internal changes
+
+* Changes to the splines2 package required some changes on our side. This affected the creation of the b-spline basis. See https://github.com/BerriJ/profoc/pull/3
+
+profoc 0.8.0 (Release date: 2021-07-27)
 ==============
 
 ## Changes:

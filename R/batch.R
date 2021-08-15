@@ -17,6 +17,11 @@
 #' @template param_loss_function
 #' @template param_loss_parameter
 #'
+#' @param qw_crps Decides wether the sum of quantile scores (FALSE) or
+#' the quantile weighted crps (TRUE) should be minimized.
+#' Defaults to FALSE. Which corresponds to Berrisch & Ziel (2021)
+#'
+#'
 #' @template param_basis_knot_distance_batch
 #' @template param_basis_knot_distance_power
 #' @template param_basis_deg_batch
@@ -43,6 +48,7 @@
 #' @template param_trace
 #'
 #' @examples
+#' \dontrun{
 #' T <- 50 # Observations
 #' N <- 2 # Experts
 #' P <- 9 # Quantiles
@@ -64,6 +70,7 @@
 #' print(model)
 #' plot(model)
 #' autoplot(model)
+#' }
 #' @export
 batch <- function(y,
                   experts,
@@ -77,6 +84,7 @@ batch <- function(y,
                   rolling_window = initial_window,
                   loss_function = "quantile",
                   loss_parameter = 1,
+                  qw_crps = FALSE,
                   basis_knot_distance = 1 / (dim(experts)[2] + 1),
                   basis_knot_distance_power = 1,
                   basis_deg = 1,
@@ -126,6 +134,7 @@ batch <- function(y,
         rolling_window = rolling_window,
         loss_function = loss_function,
         loss_parameter = loss_parameter,
+        qw_crps = qw_crps,
         basis_knot_distance = basis_knot_distance,
         basis_knot_distance_power = basis_knot_distance_power,
         basis_deg = basis_deg,

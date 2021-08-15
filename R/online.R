@@ -39,11 +39,19 @@
 #' @template param_allow_quantile_crossing
 #'
 #' @param init_weights Matrix of dimension 1xK or PxK used as starting weights. 1xK represents the constant solution with equal weights over all P, whereas specifying a PxK matrix allows different starting weights for each P.
-#' @param loss_array User specified loss array. If specified, the loss will not be calculated by profoc.
-#' @param regret_array User specified regret array. If specific, the regret will not be calculated by profoc.
+#' @param loss User specified loss array. Can also be a list with elements "loss_array"
+#' and "share", share mixes the provided loss with the loss calculated by
+#' profoc. 1 means, only the provided loss will be used. share can also be
+#' vector of shares to consider.
+#' @param regret User specified regret array. If specific, the regret will
+#'  not be calculated by profoc. Can also be a list with elements "regret_array"
+#' and "share", share mixes the provided regret with the regret calculated by
+#' profoc. 1 means, only the provided regret will be used. share can also be
+#' vector of shares to consider.
 #' @template param_trace
 #'
 #' @examples
+#' \dontrun{
 #' T <- 50 # Observations
 #' N <- 2 # Experts
 #' P <- 9 # Quantiles
@@ -74,6 +82,7 @@
 #'
 #' # Use predict to combine new_experts, model$predictions will be extended
 #' predict(model, new_experts = new_experts)
+#' }
 #' @export
 online <- function(y, experts,
                    tau = 1:dim(experts)[2] / (dim(experts)[2] + 1),
@@ -99,11 +108,9 @@ online <- function(y, experts,
                    forget_past_performance = 0,
                    allow_quantile_crossing = FALSE,
                    init_weights = NULL,
-                   loss_array = NULL,
-                   regret_array = NULL,
+                   loss = NULL,
+                   regret = NULL,
                    trace = TRUE) {
-
-
 
     # Ensure that online_rcpp does not expand a grid for basis_knot_distance
     # and p_smooth_knot_distance etc.
@@ -123,12 +130,26 @@ online <- function(y, experts,
         parametergrid <- matrix(ncol = 0, nrow = 0)
     }
 
-    if (is.null(loss_array)) {
+    if (is.null(loss)) {
         loss_array <- array(, dim = c(0, 0, 0))
+        loss_share <- 0
+    } else if (is.array(loss)) {
+        loss_array <- loss
+        loss_share <- 1
+    } else if (is.list(loss)) {
+        loss_array <- loss$loss
+        loss_share <- loss$share
     }
 
-    if (is.null(regret_array)) {
+    if (is.null(regret)) {
         regret_array <- array(, dim = c(0, 0, 0))
+        regret_share <- 0
+    } else if (is.array(regret)) {
+        regret_array <- regret
+        regret_share <- 1
+    } else if (is.list(regret)) {
+        regret_array <- regret$regret
+        regret_share <- regret$share
     }
 
     model <- online_rcpp(
@@ -157,7 +178,9 @@ online <- function(y, experts,
         allow_quantile_crossing = allow_quantile_crossing,
         init_weights = init_weights,
         loss_array = loss_array,
+        loss_share = loss_share,
         regret_array = regret_array,
+        regret_share = regret_share,
         trace = trace
     )
 
