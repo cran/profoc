@@ -10,15 +10,13 @@
 
 using namespace arma;
 
-// TODO Move core objects into a struct
-
 void online_learning_core(
-    const int &T,
-    const int &P,
-    const int &K,
-    const int &T_E_Y,
-    const int &start,
-    const int &lead_time,
+    const unsigned int &T,
+    const unsigned int &P,
+    const unsigned int &K,
+    const unsigned int &T_E_Y,
+    const unsigned int &start,
+    const unsigned int &lead_time,
     const mat &y,
     const cube &experts,
     const vec &tau,
@@ -32,7 +30,7 @@ void online_learning_core(
     mat &predictions,
     cube &past_performance,
     vec &opt_index,
-    mat &param_grid,
+    const mat &param_grid,
     mat &chosen_params,
     field<mat> &R,
     field<mat> &R_reg,
@@ -174,17 +172,14 @@ void online_learning_core(
         if (method == "ewa")
         {
           // Update the cumulative regret used by eta
-          R(x).row(l) *= (1 - param_grid(x, 3));
-          R(x).row(l) += r.t();
+          R(x).row(l) = R(x).row(l) * (1 - param_grid(x, 3)) + r.t();
           eta(x).row(l).fill(param_grid(x, 12));
-          beta(x).row(l) = beta0field(x).row(l) * K % exp(param_grid(x, 12) * R(x).row(l));
-          beta(x).row(l) /= accu(beta(x).row(l));
+          beta(x).row(l) = beta0field(x).row(l) * K % softmax_r(param_grid(x, 12) * R(x).row(l));
         }
         else if (method == "ml_poly")
         {
           // Update the cumulative regret used by ML_Poly
-          R(x).row(l) *= (1 - param_grid(x, 3));
-          R(x).row(l) += r.t();
+          R(x).row(l) = R(x).row(l) * (1 - param_grid(x, 3)) + r.t();
 
           // Update the learning rate
           eta(x).row(l) = 1 / (1 / eta(x).row(l) + square(r.t()));
@@ -197,11 +192,9 @@ void online_learning_core(
         else if (method == "boa" || method == "bewa")
         {
 
-          V(x).row(l) *= (1 - param_grid(x, 3));
-          V(x).row(l) += square(r.t());
+          V(x).row(l) = V(x).row(l) * (1 - param_grid(x, 3)) + square(r.t());
 
-          E(x).row(l) =
-              max(E(x).row(l) * (1 - param_grid(x, 3)), abs(r.t()));
+          E(x).row(l) = max(E(x).row(l) * (1 - param_grid(x, 3)), abs(r.t()));
 
           eta(x).row(l) =
               pmin_arma(
@@ -218,19 +211,12 @@ void online_learning_core(
           if (method == "boa")
           {
             // Wintenberger
-            beta(x).row(l) =
-                param_grid(x, 12) * eta(x).row(l) % exp(param_grid(x, 12) * eta(x).row(l) % R_reg(x).row(l)) % beta0field(x).row(l);
-
-            beta(x).row(l) /=
-                mean(param_grid(x, 12) * eta(x).row(l) % exp(param_grid(x, 12) * eta(x).row(l) % R_reg(x).row(l)));
+            beta(x).row(l) = beta0field(x).row(l) * K % softmax_r(log(param_grid(x, 12) * eta(x).row(l)) + param_grid(x, 12) * eta(x).row(l) % R_reg(x).row(l));
           }
           else
           {
             // Gaillard
-            beta(x).row(l) =
-                beta0field(x).row(l) * K % exp(param_grid(x, 12) * eta(x).row(l) % R_reg(x).row(l));
-            beta(x).row(l) = pmin_arma(pmax_arma(beta(x).row(l), exp(-700)), exp(700));
-            beta(x).row(l) /= accu(beta(x).row(l));
+            beta(x).row(l) = beta0field(x).row(l) * K % softmax_r(param_grid(x, 12) * eta(x).row(l) % R_reg(x).row(l));
           }
         }
         else
@@ -265,7 +251,7 @@ void online_learning_core(
           }
         }
 
-        //Add fixed_share
+        // Add fixed_share
         beta(x).row(l) =
             (1 - param_grid(x, 6)) * beta(x).row(l) +
             (param_grid(x, 6) / K);
@@ -356,33 +342,18 @@ Rcpp::List online_rcpp(
     mat &y,
     cube &experts,
     vec tau, // We don't pass by reference here since tau may be modified
-    const int &lead_time,
+    const unsigned int &lead_time,
     const std::string loss_function,
     const double &loss_parameter,
     const bool &loss_gradient,
     const std::string method,
-    const vec &basis_knot_distance,
-    const vec &basis_knot_distance_power,
-    const vec &basis_deg,
-    const vec &forget_regret,
-    const vec &soft_threshold,
-    const vec &hard_threshold,
-    const vec &fixed_share,
-    const vec &p_smooth_lambda,
-    const vec &p_smooth_knot_distance,
-    const vec &p_smooth_knot_distance_power,
-    const vec &p_smooth_deg,
-    const vec &p_smooth_ndiff,
-    const vec &gamma,
-    const int &parametergrid_max_combinations,
-    const mat &parametergrid,
+    const mat &param_grid,
     const double &forget_past_performance,
     bool allow_quantile_crossing,
-    Rcpp::Nullable<Rcpp::NumericMatrix> init_weights,
+    const mat w0,
+    const mat R0,
     const cube &loss_array,
-    const vec &loss_share,
     const cube &regret_array,
-    const vec &regret_share,
     const bool trace)
 {
 
@@ -393,17 +364,13 @@ Rcpp::List online_rcpp(
   // X number of parameter combinations to consider
 
   // Object Dimensions
-  const int T = y.n_rows;
-  const int P = experts.n_cols;
-  const int K = experts.n_slices;
-  const int T_E_Y = experts.n_rows - y.n_rows;
-
-  if (T_E_Y < 0)
-    Rcpp::stop("Number of provided expert predictions has to match or exceed observations.");
+  const unsigned int T = y.n_rows;
+  const unsigned int P = experts.n_cols;
+  const unsigned int K = experts.n_slices;
+  const unsigned int T_E_Y = experts.n_rows - y.n_rows;
 
   if (y.n_cols > 1 && !allow_quantile_crossing)
   {
-    Rcpp::warning("Warning: allow_quantile_crossing set to true since multivariate prediction target was provided.");
     allow_quantile_crossing = true;
   }
 
@@ -413,65 +380,14 @@ Rcpp::List online_rcpp(
     y = repmat(y, 1, P);
   }
 
-  // Set expand if necessary
+  // Expand tau if necessary
   if (tau.n_elem == 1)
   {
     tau.resize(P);
     tau.fill(tau(0));
   }
 
-  vec basis_knot_distance_vec = basis_knot_distance;
-
-  bool inh_deg = false;
-  if (p_smooth_deg.n_elem == 0)
-    inh_deg = true;
-
-  bool inh_kstep = false;
-  if (p_smooth_knot_distance.n_elem == 0)
-    inh_kstep = true;
-
-  bool inh_kstep_p = false;
-  if (p_smooth_knot_distance_power.n_elem == 0)
-    inh_kstep_p = true;
-
-  // Init parametergrid
-  mat param_grid;
-
-  if (parametergrid.n_rows != 0)
-  {
-    param_grid = parametergrid;
-    if (param_grid.n_cols != 15)
-      Rcpp::stop("Please provide a parametergrid with 15 columns.");
-  }
-  else
-  {
-    param_grid =
-        get_combinations(basis_knot_distance_vec,                                            // Index 0
-                         basis_knot_distance_power);                                         // Index 1
-    param_grid = get_combinations(param_grid, basis_deg);                                    // index 2
-    param_grid = get_combinations(param_grid, forget_regret);                                // index 3
-    param_grid = get_combinations(param_grid, soft_threshold);                               // index 4
-    param_grid = get_combinations(param_grid, hard_threshold);                               // index 5
-    param_grid = get_combinations(param_grid, fixed_share);                                  // index 6
-    param_grid = get_combinations(param_grid, p_smooth_lambda);                              // index 7
-    param_grid = get_combinations(param_grid, p_smooth_knot_distance, inh_kstep, 0);         // Index 8
-    param_grid = get_combinations(param_grid, p_smooth_knot_distance_power, inh_kstep_p, 1); // Index 9
-    param_grid = get_combinations(param_grid, p_smooth_deg, inh_deg, 2);                     // Index 10
-    param_grid = get_combinations(param_grid, p_smooth_ndiff);                               // Index 11
-    param_grid = get_combinations(param_grid, gamma);                                        // Index 12
-    param_grid = get_combinations(param_grid, loss_share);                                   // Index 13
-    param_grid = get_combinations(param_grid, regret_share);                                 // Index 14
-  }
-
-  if (param_grid.n_rows > parametergrid_max_combinations)
-  {
-    Rcpp::warning("Warning: Too many parameter combinations possible. %m combinations were randomly sampled. Results may depend on sampling.", parametergrid_max_combinations);
-    uvec tmp_index = randperm(param_grid.n_rows, parametergrid_max_combinations);
-    tmp_index = sort(tmp_index);
-    param_grid = param_grid.rows(tmp_index);
-  }
-
-  const int X = param_grid.n_rows;
+  const unsigned int X = param_grid.n_rows;
   mat chosen_params(T, param_grid.n_cols);
   vec opt_index(T + 1, fill::zeros);
   cube past_performance(T, P, X, fill::zeros);
@@ -479,35 +395,7 @@ Rcpp::List online_rcpp(
   vec cum_performance(X, fill::zeros);
   Progress prog(T * X + X, trace);
 
-  // Init weight objects
-
-  mat w0;
-  // Populate uniform weights if w0 was not specified
-  if (init_weights.isNotNull())
-  {
-    w0 = Rcpp::as<arma::mat>(init_weights);
-    if ((w0.n_rows != 1 && w0.n_rows != P) || w0.n_cols != K)
-      Rcpp::stop("Either a 1xK or PxK matrix of initial weights must be supplied.");
-  }
-  else
-  {
-    w0.set_size(1, K);
-    w0.fill(1 / double(K));
-  }
-
-  // Expand w0 if necessary
-  if (w0.n_rows == 1)
-  {
-    w0 = repmat(w0, P, 1);
-  }
-
-  // Truncate from below
-  w0 = pmax_arma(w0, exp(-350));
-
-  // Normalize weights
-  w0.each_col() /= sum(w0, 1);
-
-  // Init object holding weights
+  // Init objects holding weights
   cube weights_tmp(P, K, X);
   weights_tmp.each_slice() = w0;
 
@@ -547,9 +435,10 @@ Rcpp::List online_rcpp(
     {
 
       basis_mats(x) = make_basis_matrix(spline_basis_x,
-                                        param_grid(x, 0),  // kstep
-                                        param_grid(x, 2),  // degree
-                                        param_grid(x, 1)); // uneven grid
+                                        param_grid(x, 0), // kstep
+                                        param_grid(x, 2), // degree
+                                        param_grid(x, 1), // uneven grid
+                                        P % 2 == 0);      // even
     }
 
     int L = basis_mats(x).n_cols;
@@ -565,8 +454,8 @@ Rcpp::List online_rcpp(
       eta(x) = eta_;
     }
 
-    R_reg(x).zeros(L, K);
-    R(x).zeros(L, K);
+    R_reg(x) = basis_mats(x).t() * R0;
+    R(x) = basis_mats(x).t() * R0;
 
     beta(x) = (w0.t() * pinv(mat(basis_mats(x))).t()).t();
 
@@ -599,8 +488,8 @@ Rcpp::List online_rcpp(
                                         param_grid(x, 7),  // lambda
                                         param_grid(x, 11), // differences
                                         param_grid(x, 10), // degree
-                                        param_grid(x, 9)   // uneven grid
-          );
+                                        param_grid(x, 9),  // uneven grid
+                                        P % 2 == 0);       // even
       }
       if (param_grid(x, 7) != -datum::inf)
         hat_mats(x) *= basis_mats(x);
@@ -608,9 +497,6 @@ Rcpp::List online_rcpp(
       prog.increment(); // Update progress
     }
   }
-
-  if (T <= lead_time)
-    Rcpp::stop("Number of expert predictions need to exceed lead_time.");
 
   // Predictions at t < lead_time using initial weights
   for (unsigned int t = 0; t < lead_time; t++)

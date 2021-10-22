@@ -19,26 +19,13 @@ Rcpp::List batch_rcpp(
     const bool &positive,
     const bool &intercept,
     const bool &debias,
-    const int &lead_time,
-    const int initial_window,
-    const int rolling_window,
+    const unsigned int &lead_time,
+    const unsigned int initial_window,
+    const unsigned int rolling_window,
     const std::string loss_function,
     const double &loss_parameter,
     const bool &qw_crps,
-    const vec &basis_knot_distance,
-    const vec &basis_knot_distance_power,
-    const vec &basis_deg,
-    const vec &forget,
-    const vec &soft_threshold,
-    const vec &hard_threshold,
-    const vec &fixed_share,
-    const vec &p_smooth_lambda,
-    const vec &p_smooth_knot_distance,
-    const vec &p_smooth_knot_distance_power,
-    const vec &p_smooth_deg,
-    const vec &p_smooth_ndiff,
-    const int parametergrid_max_combinations,
-    const mat &parametergrid,
+    const mat &param_grid,
     const double &forget_past_performance,
     bool allow_quantile_crossing,
     const bool trace)
@@ -57,20 +44,13 @@ Rcpp::List batch_rcpp(
     // X number of parameter combinations to consider
 
     // Object Dimensions
-    const int T = y.n_rows;
-    const int P = experts.n_cols;
-    const int K = experts.n_slices;
-    const int T_E_Y = experts.n_rows - y.n_rows;
-
-    if (T_E_Y < 0)
-        Rcpp::stop("Number of provided expert predictions has to match or exceed observations.");
-
-    if (T <= initial_window)
-        Rcpp::stop("Initial estimation window greater or equal to input data.");
+    const unsigned int T = y.n_rows;
+    const unsigned int P = experts.n_cols;
+    const unsigned int K = experts.n_slices;
+    const unsigned int T_E_Y = experts.n_rows - y.n_rows;
 
     if (y.n_cols > 1 && !allow_quantile_crossing)
     {
-        Rcpp::warning("Warning: allow_quantile_crossing set to true since multivariate prediction target was provided.");
         allow_quantile_crossing = true;
     }
 
@@ -80,72 +60,20 @@ Rcpp::List batch_rcpp(
         y = repmat(y, 1, P);
     }
 
-    // Set expand if necessary
+    // Expand tau if necessary
     if (tau.n_elem == 1)
     {
         tau.resize(P);
         tau.fill(tau(0));
     }
 
-    if (initial_window > rolling_window)
-        Rcpp::stop("Initial estimation window bigger than rolling_window.");
-
-    bool inh_deg = false;
-    if (p_smooth_deg.n_elem == 0)
-        inh_deg = true;
-
-    bool inh_kstep = false;
-    if (p_smooth_knot_distance.n_elem == 0)
-        inh_kstep = true;
-
-    bool inh_kstep_p = false;
-    if (p_smooth_knot_distance_power.n_elem == 0)
-        inh_kstep_p = true;
-
-    // Init parametergrid
-    mat param_grid;
-
-    if (parametergrid.n_rows != 0)
-    {
-        param_grid = parametergrid;
-        if (param_grid.n_cols != 12)
-            Rcpp::stop("Please provide a parametergrid with 12 columns.");
-    }
-    else
-    {
-        // Init parametergrid
-        param_grid =
-            get_combinations(basis_knot_distance,                                                // Index 0
-                             basis_knot_distance_power);                                         // Index 1
-        param_grid = get_combinations(param_grid, basis_deg);                                    // index 2
-        param_grid = get_combinations(param_grid, forget);                                       // index 3
-        param_grid = get_combinations(param_grid, soft_threshold);                               // index 4
-        param_grid = get_combinations(param_grid, hard_threshold);                               // index 5
-        param_grid = get_combinations(param_grid, fixed_share);                                  // index 6
-        param_grid = get_combinations(param_grid, p_smooth_lambda);                              // index 7
-        param_grid = get_combinations(param_grid, p_smooth_knot_distance, inh_kstep, 0);         // Index 8
-        param_grid = get_combinations(param_grid, p_smooth_knot_distance_power, inh_kstep_p, 1); // Index 9
-        param_grid = get_combinations(param_grid, p_smooth_deg, inh_deg, 2);                     // Index 10
-        param_grid = get_combinations(param_grid, p_smooth_ndiff);                               // Index 11
-    }
-
-    if (param_grid.n_rows > parametergrid_max_combinations)
-    {
-        Rcpp::warning("Warning: Too many parameter combinations possible. %m combinations were randomly sampled. Results may depend on sampling.", parametergrid_max_combinations);
-        uvec tmp_index = randperm(param_grid.n_rows, parametergrid_max_combinations);
-        tmp_index = sort(tmp_index);
-        param_grid = param_grid.rows(tmp_index);
-    }
-
-    const int X = param_grid.n_rows;
+    const unsigned int X = param_grid.n_rows;
     mat chosen_params(T, param_grid.n_cols);
     vec opt_index(T + 1, fill::zeros);
     cube past_performance(T, P, X, fill::zeros);
     vec tmp_performance(X, fill::zeros);
     vec cum_performance(X, fill::zeros);
     Progress prog((T - initial_window) * X + X, trace);
-
-    // Populate uniform weights
 
     // Init object holding temp. weights, resp. ex-ante
     cube weights_tmp(P, K, X);
@@ -190,8 +118,8 @@ Rcpp::List batch_rcpp(
                                                   param_grid(x, 7),  // lambda
                                                   param_grid(x, 11), // differences
                                                   param_grid(x, 10), // degree
-                                                  param_grid(x, 9)   // uneven grid
-                    );
+                                                  param_grid(x, 9),  // uneven grid
+                                                  P % 2 == 0);       // even
             }
             R_CheckUserInterrupt();
             prog.increment(); // Update progress
@@ -216,9 +144,10 @@ Rcpp::List batch_rcpp(
         else
         {
             basis_mats(x) = make_basis_matrix(spline_basis_x,
-                                              param_grid(x, 0),  // kstep
-                                              param_grid(x, 2),  // degree
-                                              param_grid(x, 1)); // uneven grid
+                                              param_grid(x, 0), // kstep
+                                              param_grid(x, 2), // degree
+                                              param_grid(x, 1), // uneven grid
+                                              P % 2 == 0);      // even
         }
 
         beta(x) = (weights_tmp.slice(x).t() * pinv(mat(basis_mats(x))).t()).t();
@@ -315,7 +244,7 @@ Rcpp::List batch_rcpp(
                         threshold_hard(e, param_grid(x, 5));
                     }
 
-                    //Add fixed_share
+                    // Add fixed_share
                     weights_tmp(span(p), span(intercept * debias, K - 1), span(x)) *= (1 - param_grid(x, 6));
                     weights_tmp(span(p), span(intercept * debias, K - 1), span(x)) += (param_grid(x, 6) / (K - intercept * debias));
                 }
@@ -352,7 +281,7 @@ Rcpp::List batch_rcpp(
                         threshold_hard(e, param_grid(x, 5));
                     }
 
-                    //Add fixed_share
+                    // Add fixed_share
                     beta(x).row(l) =
                         (1 - param_grid(x, 6)) * beta(x).row(l) +
                         (param_grid(x, 6) / K);

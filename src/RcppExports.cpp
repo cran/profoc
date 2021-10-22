@@ -13,8 +13,8 @@ Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
 // batch_rcpp
-Rcpp::List batch_rcpp(mat& y, cube& experts, vec tau, const bool& affine, const bool& positive, const bool& intercept, const bool& debias, const int& lead_time, const int initial_window, const int rolling_window, const std::string loss_function, const double& loss_parameter, const bool& qw_crps, const vec& basis_knot_distance, const vec& basis_knot_distance_power, const vec& basis_deg, const vec& forget, const vec& soft_threshold, const vec& hard_threshold, const vec& fixed_share, const vec& p_smooth_lambda, const vec& p_smooth_knot_distance, const vec& p_smooth_knot_distance_power, const vec& p_smooth_deg, const vec& p_smooth_ndiff, const int parametergrid_max_combinations, const mat& parametergrid, const double& forget_past_performance, bool allow_quantile_crossing, const bool trace);
-RcppExport SEXP _profoc_batch_rcpp(SEXP ySEXP, SEXP expertsSEXP, SEXP tauSEXP, SEXP affineSEXP, SEXP positiveSEXP, SEXP interceptSEXP, SEXP debiasSEXP, SEXP lead_timeSEXP, SEXP initial_windowSEXP, SEXP rolling_windowSEXP, SEXP loss_functionSEXP, SEXP loss_parameterSEXP, SEXP qw_crpsSEXP, SEXP basis_knot_distanceSEXP, SEXP basis_knot_distance_powerSEXP, SEXP basis_degSEXP, SEXP forgetSEXP, SEXP soft_thresholdSEXP, SEXP hard_thresholdSEXP, SEXP fixed_shareSEXP, SEXP p_smooth_lambdaSEXP, SEXP p_smooth_knot_distanceSEXP, SEXP p_smooth_knot_distance_powerSEXP, SEXP p_smooth_degSEXP, SEXP p_smooth_ndiffSEXP, SEXP parametergrid_max_combinationsSEXP, SEXP parametergridSEXP, SEXP forget_past_performanceSEXP, SEXP allow_quantile_crossingSEXP, SEXP traceSEXP) {
+Rcpp::List batch_rcpp(mat& y, cube& experts, vec tau, const bool& affine, const bool& positive, const bool& intercept, const bool& debias, const unsigned int& lead_time, const unsigned int initial_window, const unsigned int rolling_window, const std::string loss_function, const double& loss_parameter, const bool& qw_crps, const mat& param_grid, const double& forget_past_performance, bool allow_quantile_crossing, const bool trace);
+RcppExport SEXP _profoc_batch_rcpp(SEXP ySEXP, SEXP expertsSEXP, SEXP tauSEXP, SEXP affineSEXP, SEXP positiveSEXP, SEXP interceptSEXP, SEXP debiasSEXP, SEXP lead_timeSEXP, SEXP initial_windowSEXP, SEXP rolling_windowSEXP, SEXP loss_functionSEXP, SEXP loss_parameterSEXP, SEXP qw_crpsSEXP, SEXP param_gridSEXP, SEXP forget_past_performanceSEXP, SEXP allow_quantile_crossingSEXP, SEXP traceSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -25,30 +25,17 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const bool& >::type positive(positiveSEXP);
     Rcpp::traits::input_parameter< const bool& >::type intercept(interceptSEXP);
     Rcpp::traits::input_parameter< const bool& >::type debias(debiasSEXP);
-    Rcpp::traits::input_parameter< const int& >::type lead_time(lead_timeSEXP);
-    Rcpp::traits::input_parameter< const int >::type initial_window(initial_windowSEXP);
-    Rcpp::traits::input_parameter< const int >::type rolling_window(rolling_windowSEXP);
+    Rcpp::traits::input_parameter< const unsigned int& >::type lead_time(lead_timeSEXP);
+    Rcpp::traits::input_parameter< const unsigned int >::type initial_window(initial_windowSEXP);
+    Rcpp::traits::input_parameter< const unsigned int >::type rolling_window(rolling_windowSEXP);
     Rcpp::traits::input_parameter< const std::string >::type loss_function(loss_functionSEXP);
     Rcpp::traits::input_parameter< const double& >::type loss_parameter(loss_parameterSEXP);
     Rcpp::traits::input_parameter< const bool& >::type qw_crps(qw_crpsSEXP);
-    Rcpp::traits::input_parameter< const vec& >::type basis_knot_distance(basis_knot_distanceSEXP);
-    Rcpp::traits::input_parameter< const vec& >::type basis_knot_distance_power(basis_knot_distance_powerSEXP);
-    Rcpp::traits::input_parameter< const vec& >::type basis_deg(basis_degSEXP);
-    Rcpp::traits::input_parameter< const vec& >::type forget(forgetSEXP);
-    Rcpp::traits::input_parameter< const vec& >::type soft_threshold(soft_thresholdSEXP);
-    Rcpp::traits::input_parameter< const vec& >::type hard_threshold(hard_thresholdSEXP);
-    Rcpp::traits::input_parameter< const vec& >::type fixed_share(fixed_shareSEXP);
-    Rcpp::traits::input_parameter< const vec& >::type p_smooth_lambda(p_smooth_lambdaSEXP);
-    Rcpp::traits::input_parameter< const vec& >::type p_smooth_knot_distance(p_smooth_knot_distanceSEXP);
-    Rcpp::traits::input_parameter< const vec& >::type p_smooth_knot_distance_power(p_smooth_knot_distance_powerSEXP);
-    Rcpp::traits::input_parameter< const vec& >::type p_smooth_deg(p_smooth_degSEXP);
-    Rcpp::traits::input_parameter< const vec& >::type p_smooth_ndiff(p_smooth_ndiffSEXP);
-    Rcpp::traits::input_parameter< const int >::type parametergrid_max_combinations(parametergrid_max_combinationsSEXP);
-    Rcpp::traits::input_parameter< const mat& >::type parametergrid(parametergridSEXP);
+    Rcpp::traits::input_parameter< const mat& >::type param_grid(param_gridSEXP);
     Rcpp::traits::input_parameter< const double& >::type forget_past_performance(forget_past_performanceSEXP);
     Rcpp::traits::input_parameter< bool >::type allow_quantile_crossing(allow_quantile_crossingSEXP);
     Rcpp::traits::input_parameter< const bool >::type trace(traceSEXP);
-    rcpp_result_gen = Rcpp::wrap(batch_rcpp(y, experts, tau, affine, positive, intercept, debias, lead_time, initial_window, rolling_window, loss_function, loss_parameter, qw_crps, basis_knot_distance, basis_knot_distance_power, basis_deg, forget, soft_threshold, hard_threshold, fixed_share, p_smooth_lambda, p_smooth_knot_distance, p_smooth_knot_distance_power, p_smooth_deg, p_smooth_ndiff, parametergrid_max_combinations, parametergrid, forget_past_performance, allow_quantile_crossing, trace));
+    rcpp_result_gen = Rcpp::wrap(batch_rcpp(y, experts, tau, affine, positive, intercept, debias, lead_time, initial_window, rolling_window, loss_function, loss_parameter, qw_crps, param_grid, forget_past_performance, allow_quantile_crossing, trace));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -150,14 +137,14 @@ BEGIN_RCPP
 END_RCPP
 }
 // vec2mat
-mat vec2mat(const vec& x, const int& matrows, const int& matcols);
+mat vec2mat(const vec& x, const unsigned int& matrows, const unsigned int& matcols);
 RcppExport SEXP _profoc_vec2mat(SEXP xSEXP, SEXP matrowsSEXP, SEXP matcolsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const vec& >::type x(xSEXP);
-    Rcpp::traits::input_parameter< const int& >::type matrows(matrowsSEXP);
-    Rcpp::traits::input_parameter< const int& >::type matcols(matcolsSEXP);
+    Rcpp::traits::input_parameter< const unsigned int& >::type matrows(matrowsSEXP);
+    Rcpp::traits::input_parameter< const unsigned int& >::type matcols(matcolsSEXP);
     rcpp_result_gen = Rcpp::wrap(vec2mat(x, matrows, matcols));
     return rcpp_result_gen;
 END_RCPP
@@ -174,43 +161,28 @@ BEGIN_RCPP
 END_RCPP
 }
 // online_rcpp
-Rcpp::List online_rcpp(mat& y, cube& experts, vec tau, const int& lead_time, const std::string loss_function, const double& loss_parameter, const bool& loss_gradient, const std::string method, const vec& basis_knot_distance, const vec& basis_knot_distance_power, const vec& basis_deg, const vec& forget_regret, const vec& soft_threshold, const vec& hard_threshold, const vec& fixed_share, const vec& p_smooth_lambda, const vec& p_smooth_knot_distance, const vec& p_smooth_knot_distance_power, const vec& p_smooth_deg, const vec& p_smooth_ndiff, const vec& gamma, const int& parametergrid_max_combinations, const mat& parametergrid, const double& forget_past_performance, bool allow_quantile_crossing, Rcpp::Nullable<Rcpp::NumericMatrix> init_weights, const cube& loss_array, const vec& loss_share, const cube& regret_array, const vec& regret_share, const bool trace);
-RcppExport SEXP _profoc_online_rcpp(SEXP ySEXP, SEXP expertsSEXP, SEXP tauSEXP, SEXP lead_timeSEXP, SEXP loss_functionSEXP, SEXP loss_parameterSEXP, SEXP loss_gradientSEXP, SEXP methodSEXP, SEXP basis_knot_distanceSEXP, SEXP basis_knot_distance_powerSEXP, SEXP basis_degSEXP, SEXP forget_regretSEXP, SEXP soft_thresholdSEXP, SEXP hard_thresholdSEXP, SEXP fixed_shareSEXP, SEXP p_smooth_lambdaSEXP, SEXP p_smooth_knot_distanceSEXP, SEXP p_smooth_knot_distance_powerSEXP, SEXP p_smooth_degSEXP, SEXP p_smooth_ndiffSEXP, SEXP gammaSEXP, SEXP parametergrid_max_combinationsSEXP, SEXP parametergridSEXP, SEXP forget_past_performanceSEXP, SEXP allow_quantile_crossingSEXP, SEXP init_weightsSEXP, SEXP loss_arraySEXP, SEXP loss_shareSEXP, SEXP regret_arraySEXP, SEXP regret_shareSEXP, SEXP traceSEXP) {
+Rcpp::List online_rcpp(mat& y, cube& experts, vec tau, const unsigned int& lead_time, const std::string loss_function, const double& loss_parameter, const bool& loss_gradient, const std::string method, const mat& param_grid, const double& forget_past_performance, bool allow_quantile_crossing, const mat w0, const mat R0, const cube& loss_array, const cube& regret_array, const bool trace);
+RcppExport SEXP _profoc_online_rcpp(SEXP ySEXP, SEXP expertsSEXP, SEXP tauSEXP, SEXP lead_timeSEXP, SEXP loss_functionSEXP, SEXP loss_parameterSEXP, SEXP loss_gradientSEXP, SEXP methodSEXP, SEXP param_gridSEXP, SEXP forget_past_performanceSEXP, SEXP allow_quantile_crossingSEXP, SEXP w0SEXP, SEXP R0SEXP, SEXP loss_arraySEXP, SEXP regret_arraySEXP, SEXP traceSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< mat& >::type y(ySEXP);
     Rcpp::traits::input_parameter< cube& >::type experts(expertsSEXP);
     Rcpp::traits::input_parameter< vec >::type tau(tauSEXP);
-    Rcpp::traits::input_parameter< const int& >::type lead_time(lead_timeSEXP);
+    Rcpp::traits::input_parameter< const unsigned int& >::type lead_time(lead_timeSEXP);
     Rcpp::traits::input_parameter< const std::string >::type loss_function(loss_functionSEXP);
     Rcpp::traits::input_parameter< const double& >::type loss_parameter(loss_parameterSEXP);
     Rcpp::traits::input_parameter< const bool& >::type loss_gradient(loss_gradientSEXP);
     Rcpp::traits::input_parameter< const std::string >::type method(methodSEXP);
-    Rcpp::traits::input_parameter< const vec& >::type basis_knot_distance(basis_knot_distanceSEXP);
-    Rcpp::traits::input_parameter< const vec& >::type basis_knot_distance_power(basis_knot_distance_powerSEXP);
-    Rcpp::traits::input_parameter< const vec& >::type basis_deg(basis_degSEXP);
-    Rcpp::traits::input_parameter< const vec& >::type forget_regret(forget_regretSEXP);
-    Rcpp::traits::input_parameter< const vec& >::type soft_threshold(soft_thresholdSEXP);
-    Rcpp::traits::input_parameter< const vec& >::type hard_threshold(hard_thresholdSEXP);
-    Rcpp::traits::input_parameter< const vec& >::type fixed_share(fixed_shareSEXP);
-    Rcpp::traits::input_parameter< const vec& >::type p_smooth_lambda(p_smooth_lambdaSEXP);
-    Rcpp::traits::input_parameter< const vec& >::type p_smooth_knot_distance(p_smooth_knot_distanceSEXP);
-    Rcpp::traits::input_parameter< const vec& >::type p_smooth_knot_distance_power(p_smooth_knot_distance_powerSEXP);
-    Rcpp::traits::input_parameter< const vec& >::type p_smooth_deg(p_smooth_degSEXP);
-    Rcpp::traits::input_parameter< const vec& >::type p_smooth_ndiff(p_smooth_ndiffSEXP);
-    Rcpp::traits::input_parameter< const vec& >::type gamma(gammaSEXP);
-    Rcpp::traits::input_parameter< const int& >::type parametergrid_max_combinations(parametergrid_max_combinationsSEXP);
-    Rcpp::traits::input_parameter< const mat& >::type parametergrid(parametergridSEXP);
+    Rcpp::traits::input_parameter< const mat& >::type param_grid(param_gridSEXP);
     Rcpp::traits::input_parameter< const double& >::type forget_past_performance(forget_past_performanceSEXP);
     Rcpp::traits::input_parameter< bool >::type allow_quantile_crossing(allow_quantile_crossingSEXP);
-    Rcpp::traits::input_parameter< Rcpp::Nullable<Rcpp::NumericMatrix> >::type init_weights(init_weightsSEXP);
+    Rcpp::traits::input_parameter< const mat >::type w0(w0SEXP);
+    Rcpp::traits::input_parameter< const mat >::type R0(R0SEXP);
     Rcpp::traits::input_parameter< const cube& >::type loss_array(loss_arraySEXP);
-    Rcpp::traits::input_parameter< const vec& >::type loss_share(loss_shareSEXP);
     Rcpp::traits::input_parameter< const cube& >::type regret_array(regret_arraySEXP);
-    Rcpp::traits::input_parameter< const vec& >::type regret_share(regret_shareSEXP);
     Rcpp::traits::input_parameter< const bool >::type trace(traceSEXP);
-    rcpp_result_gen = Rcpp::wrap(online_rcpp(y, experts, tau, lead_time, loss_function, loss_parameter, loss_gradient, method, basis_knot_distance, basis_knot_distance_power, basis_deg, forget_regret, soft_threshold, hard_threshold, fixed_share, p_smooth_lambda, p_smooth_knot_distance, p_smooth_knot_distance_power, p_smooth_deg, p_smooth_ndiff, gamma, parametergrid_max_combinations, parametergrid, forget_past_performance, allow_quantile_crossing, init_weights, loss_array, loss_share, regret_array, regret_share, trace));
+    rcpp_result_gen = Rcpp::wrap(online_rcpp(y, experts, tau, lead_time, loss_function, loss_parameter, loss_gradient, method, param_grid, forget_past_performance, allow_quantile_crossing, w0, R0, loss_array, regret_array, trace));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -303,15 +275,16 @@ BEGIN_RCPP
 END_RCPP
 }
 // make_knots
-vec make_knots(const double& kstep, const double& a, const int deg);
-RcppExport SEXP _profoc_make_knots(SEXP kstepSEXP, SEXP aSEXP, SEXP degSEXP) {
+vec make_knots(const double& kstep, const double& a, const int deg, const bool& even);
+RcppExport SEXP _profoc_make_knots(SEXP kstepSEXP, SEXP aSEXP, SEXP degSEXP, SEXP evenSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const double& >::type kstep(kstepSEXP);
     Rcpp::traits::input_parameter< const double& >::type a(aSEXP);
     Rcpp::traits::input_parameter< const int >::type deg(degSEXP);
-    rcpp_result_gen = Rcpp::wrap(make_knots(kstep, a, deg));
+    Rcpp::traits::input_parameter< const bool& >::type even(evenSEXP);
+    rcpp_result_gen = Rcpp::wrap(make_knots(kstep, a, deg, even));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -329,8 +302,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // make_hat_matrix
-mat make_hat_matrix(const vec& x, const double& kstep, const double& lambda, const double& bdiff, const int deg, const double& a);
-RcppExport SEXP _profoc_make_hat_matrix(SEXP xSEXP, SEXP kstepSEXP, SEXP lambdaSEXP, SEXP bdiffSEXP, SEXP degSEXP, SEXP aSEXP) {
+mat make_hat_matrix(const vec& x, const double& kstep, const double& lambda, const double& bdiff, const int deg, const double& a, const bool& even);
+RcppExport SEXP _profoc_make_hat_matrix(SEXP xSEXP, SEXP kstepSEXP, SEXP lambdaSEXP, SEXP bdiffSEXP, SEXP degSEXP, SEXP aSEXP, SEXP evenSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -340,13 +313,14 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const double& >::type bdiff(bdiffSEXP);
     Rcpp::traits::input_parameter< const int >::type deg(degSEXP);
     Rcpp::traits::input_parameter< const double& >::type a(aSEXP);
-    rcpp_result_gen = Rcpp::wrap(make_hat_matrix(x, kstep, lambda, bdiff, deg, a));
+    Rcpp::traits::input_parameter< const bool& >::type even(evenSEXP);
+    rcpp_result_gen = Rcpp::wrap(make_hat_matrix(x, kstep, lambda, bdiff, deg, a, even));
     return rcpp_result_gen;
 END_RCPP
 }
 // make_basis_matrix
-sp_mat make_basis_matrix(const vec& x, const double& kstep, const int deg, const double& a);
-RcppExport SEXP _profoc_make_basis_matrix(SEXP xSEXP, SEXP kstepSEXP, SEXP degSEXP, SEXP aSEXP) {
+sp_mat make_basis_matrix(const vec& x, const double& kstep, const int deg, const double& a, const bool& even);
+RcppExport SEXP _profoc_make_basis_matrix(SEXP xSEXP, SEXP kstepSEXP, SEXP degSEXP, SEXP aSEXP, SEXP evenSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -354,24 +328,8 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const double& >::type kstep(kstepSEXP);
     Rcpp::traits::input_parameter< const int >::type deg(degSEXP);
     Rcpp::traits::input_parameter< const double& >::type a(aSEXP);
-    rcpp_result_gen = Rcpp::wrap(make_basis_matrix(x, kstep, deg, a));
-    return rcpp_result_gen;
-END_RCPP
-}
-// spline_fit
-vec spline_fit(const vec& y, const vec& x, const double& lambda, const int& ndiff, const int& deg, const double& knot_distance, const double& knot_distance_power);
-RcppExport SEXP _profoc_spline_fit(SEXP ySEXP, SEXP xSEXP, SEXP lambdaSEXP, SEXP ndiffSEXP, SEXP degSEXP, SEXP knot_distanceSEXP, SEXP knot_distance_powerSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const vec& >::type y(ySEXP);
-    Rcpp::traits::input_parameter< const vec& >::type x(xSEXP);
-    Rcpp::traits::input_parameter< const double& >::type lambda(lambdaSEXP);
-    Rcpp::traits::input_parameter< const int& >::type ndiff(ndiffSEXP);
-    Rcpp::traits::input_parameter< const int& >::type deg(degSEXP);
-    Rcpp::traits::input_parameter< const double& >::type knot_distance(knot_distanceSEXP);
-    Rcpp::traits::input_parameter< const double& >::type knot_distance_power(knot_distance_powerSEXP);
-    rcpp_result_gen = Rcpp::wrap(spline_fit(y, x, lambda, ndiff, deg, knot_distance, knot_distance_power));
+    Rcpp::traits::input_parameter< const bool& >::type even(evenSEXP);
+    rcpp_result_gen = Rcpp::wrap(make_basis_matrix(x, kstep, deg, a, even));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -390,7 +348,7 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_profoc_batch_rcpp", (DL_FUNC) &_profoc_batch_rcpp, 30},
+    {"_profoc_batch_rcpp", (DL_FUNC) &_profoc_batch_rcpp, 17},
     {"_profoc_loss", (DL_FUNC) &_profoc_loss, 7},
     {"_profoc_loss_grad_wrt_w", (DL_FUNC) &_profoc_loss_grad_wrt_w, 7},
     {"_profoc_pmin_arma", (DL_FUNC) &_profoc_pmin_arma, 2},
@@ -400,17 +358,16 @@ static const R_CallMethodDef CallEntries[] = {
     {"_profoc_set_default", (DL_FUNC) &_profoc_set_default, 2},
     {"_profoc_vec2mat", (DL_FUNC) &_profoc_vec2mat, 3},
     {"_profoc_mat2vec", (DL_FUNC) &_profoc_mat2vec, 1},
-    {"_profoc_online_rcpp", (DL_FUNC) &_profoc_online_rcpp, 31},
+    {"_profoc_online_rcpp", (DL_FUNC) &_profoc_online_rcpp, 16},
     {"_profoc_predict_online", (DL_FUNC) &_profoc_predict_online, 2},
     {"_profoc_update_online", (DL_FUNC) &_profoc_update_online, 3},
     {"_profoc_optimize_weights", (DL_FUNC) &_profoc_optimize_weights, 10},
     {"_profoc_optimize_betas", (DL_FUNC) &_profoc_optimize_betas, 13},
     {"_profoc_oracle", (DL_FUNC) &_profoc_oracle, 10},
-    {"_profoc_make_knots", (DL_FUNC) &_profoc_make_knots, 3},
+    {"_profoc_make_knots", (DL_FUNC) &_profoc_make_knots, 4},
     {"_profoc_make_difference_matrix", (DL_FUNC) &_profoc_make_difference_matrix, 3},
-    {"_profoc_make_hat_matrix", (DL_FUNC) &_profoc_make_hat_matrix, 6},
-    {"_profoc_make_basis_matrix", (DL_FUNC) &_profoc_make_basis_matrix, 4},
-    {"_profoc_spline_fit", (DL_FUNC) &_profoc_spline_fit, 7},
+    {"_profoc_make_hat_matrix", (DL_FUNC) &_profoc_make_hat_matrix, 7},
+    {"_profoc_make_basis_matrix", (DL_FUNC) &_profoc_make_basis_matrix, 5},
     {"_profoc_splines2_basis", (DL_FUNC) &_profoc_splines2_basis, 3},
     {NULL, NULL, 0}
 };
