@@ -4,8 +4,11 @@ set.seed(1)
 
 T <- 1000
 N <- 2
-P <- 99
+P <- 9
 prob_grid <- 1:P / (P + 1)
+
+mean_y <- 0
+sd_y <- 5
 
 # Realized observations
 y <- rnorm(n = T)
@@ -17,16 +20,21 @@ for (t in 1:T) {
     experts[t, , 2] <- qnorm(prob_grid, mean = 5, sd = 2)
 }
 
-model <- online(
-    y = matrix(y),
-    experts = experts,
+# We expect inheritance from basis > smooth:
+mod1 <- online(
+    y = y, # Y as a vector
     tau = prob_grid,
-    b_smooth_pr = list(knots = 1, outer = FALSE),
+    experts = experts,
     trace = FALSE
 )
 
-diff(model$weights[500, , , 1])
+mod2 <- online(
+    y = matrix(y), # Y as a vector
+    tau = prob_grid,
+    experts = experts,
+    trace = FALSE
+)
 
-diffs <- apply(model$weights[, , , ], MARGIN = 1, FUN = diff)
+# Passting y as vec does not change results
+expect_true(all(mod1$weights == mod2$weights))
 
-expect_true(sum(diffs) == 0)

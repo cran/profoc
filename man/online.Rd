@@ -7,24 +7,22 @@
 online(
   y,
   experts,
-  tau = 1:dim(experts)[2]/(dim(experts)[2] + 1),
+  tau,
   lead_time = 0,
   loss_function = "quantile",
   loss_parameter = 1,
   loss_gradient = TRUE,
   method = "bewa",
-  basis_knot_distance = 1/(dim(experts)[2] + 1),
-  basis_knot_distance_power = 1,
-  basis_deg = 1,
+  b_smooth_pr = list(knots = P, beta_a = 1, beta_b = 1, deg = 1, outer = TRUE),
+  p_smooth_pr = list(knots = P, beta_a = 1, beta_b = 1, deg = 1, outer = TRUE, ndiff =
+    1.5, lambda = -Inf),
+  b_smooth_mv = list(knots = D, beta_a = 1, beta_b = 1, deg = 1, outer = TRUE),
+  p_smooth_mv = list(knots = D, beta_a = 1, beta_b = 1, deg = 1, outer = TRUE, ndiff =
+    1.5, lambda = -Inf),
   forget_regret = 0,
   soft_threshold = -Inf,
   hard_threshold = -Inf,
   fixed_share = 0,
-  p_smooth_lambda = -Inf,
-  p_smooth_knot_distance = basis_knot_distance,
-  p_smooth_knot_distance_power = basis_knot_distance_power,
-  p_smooth_deg = basis_deg,
-  p_smooth_ndiff = 1.5,
   gamma = 1,
   parametergrid_max_combinations = 100,
   parametergrid = NULL,
@@ -38,8 +36,8 @@ online(
 }
 \arguments{
 \item{y}{A numeric matrix of realizations. In probabilistic
-settings a matrix of dimension Tx1. In multivariate setting
-a TxP matrix can be used. In the latter case, each slice of
+settings a matrix of dimension Tx1, in multivariate settings
+a TxP matrix. In the latter case, each slice of
 the expert's array gets evaluated using the corresponding
 column of the y matrix.}
 
@@ -62,18 +60,21 @@ to t+1+h at time t. The weight updates delay accordingly.}
 order refinement of boa, but updating weights with the simple
  exponential weighting.}
 
-\item{basis_knot_distance}{determines the distance of the knots in the probability
-basis. Defaults to 1 / (dim(experts)[2] + 1), which means that one knot is created
-for every quantile. Takes a vector with values >0 where values > .5 correspond to constant
-weights (only one single knot).}
+\item{b_smooth_pr}{A named list determining how the B-Spline matrices for
+probabilistic smoothing are created. Default corresponds to no probabilistic
+smoothing. See details.}
 
-\item{basis_knot_distance_power}{Parameter which defines the symmetry of the
-basis reducing the probability space. Defaults to 1, which corresponds to
-equidistant knots. Values less than 1 create more knots in the center, while
-values above 1 concentrate more knots in the tails.}
+\item{p_smooth_pr}{A named list determining how the hat matrices  for
+probabilistic P-Spline smoothing are created. Default corresponds to
+no smoothing. See details.}
 
-\item{basis_deg}{Degree of the basis reducing the probability space.
-Defaults to 1.}
+\item{b_smooth_mv}{A named list determining how the B-Spline matrices  for
+multivariate smoothing are created. Default corresponds to no probabilistic
+smoothing. See details.}
+
+\item{p_smooth_mv}{A named list determining how the hat matrices  for
+probabilistic P-Spline smoothing are created. Default corresponds to
+no smoothing. See details.}
 
 \item{forget_regret}{Share of past regret not to be considered, resp. to be
 forgotten in every iteration of the algorithm. Defaults to 0.}
@@ -94,24 +95,6 @@ leads to the 'follow the leader' strategy if method is set to "ewa".}
 
 \item{fixed_share}{Amount of fixed share to be added to the weights.
 Defaults to 0. 1 leads to uniform weights.}
-
-\item{p_smooth_lambda}{Penalization parameter used in the smoothing step.
--Inf causes the smoothing step to be skipped (default).}
-
-\item{p_smooth_knot_distance}{determines the distance of the knots. Defaults to
-the value of basis_knot_distance.
-Corresponds to the grid steps when knot_distance_power = 1 (the default).}
-
-\item{p_smooth_knot_distance_power}{Parameter which defines the symmetry of
-the P-Spline basis. Takes the value of basis_knot_distance_power if unspecified.}
-
-\item{p_smooth_deg}{Degree of the B-Spine basis functions.
-Defaults to the value of basis_deg.}
-
-\item{p_smooth_ndiff}{Degree of the differencing operator in the smoothing equation.
-1.5 (default) leads to shrinkage towards a constant. Can take values from 1 to 2.
-If a value in between is used, a weighted sum of the first and second
-differentiation matrix is calculated.}
 
 \item{gamma}{Scaling parameter for the learning rate.}
 
@@ -134,9 +117,12 @@ combination. Defaults to 0.}
 
 \item{allow_quantile_crossing}{Shall quantile crossing be allowed? Defaults to false, which means that predictions are sorted in ascending order.}
 
-\item{init}{A named list containing "init_weights": Matrix of dimension 1xK or PxK used as starting weights. 1xK represents the constant solution with equal weights over all P, whereas specifying a PxK matrix allows different starting weights for each P. "R0" a matrix of dimension PxK or 1xK used as starting regret.}
+\item{init}{A named list containing "init_weights": Array of dimension
+DxPxK used as starting weights. "R0" a matrix of dimension PxK or 1xK
+used as starting regret.}
 
-\item{loss}{User specified loss array. Can also be a list with elements "loss_array"
+\item{loss}{User specified loss array. Can also be a list with elements
+"loss_array"
 and "share", share mixes the provided loss with the loss calculated by
 profoc. 1 means, only the provided loss will be used. share can also be
 vector of shares to consider.}
@@ -157,11 +143,36 @@ Returns predictions and weights calculated by online-learning algorithms
 using CRPS Learning.
 }
 \details{
-online can tune various parameters automatically based on
-the past loss. For this, lambda, forget, fixed_share, gamma, ndiff,
-deg and knot_distance can be specified as numeric vectors containing
-parameters to consider. online will automatically try all possible
-combinations of values provide.
+online selects various parameters automatically based on
+the past loss. For this, lambda, forget, fixed_share, gamma, and the
+smoothing parameters (see below) can be specified as numeric vectors
+containing values to consider.
+
+This package offers two options for smoothing (Basis Smoothing
+and P-Splines). Both options can be used to smooth the weights
+over dimension D (covariates) or P (quantiles) or both.
+Parameters \code{b_smooth_pr} and \code{b_smooth_mv} take named lists to create
+the corresponding basis matrices. The arguments include are: \code{knots}
+which determines the number of knots to be created (excluding outer
+knots which are added additionally), \code{beta_a} and \code{beta_b} correspond
+to the parameters
+of the beta distribution, which defines how the knots are distributed
+(see \code{?make_knots} for details) both default to 1 which will create an
+equidistant knot sequence, \code{deg} sets the degree of the spline function
+and also influences how many outer knots will be used, \code{outer_knots}
+determines if outer knots should be created, this defaults to TRUE.
+It's possible to provide vectors of values for each of these parameters.
+In that case, all parameter combinations will be used to create the
+respective matrices and all candidates will be considered during
+online-learning.
+Parameters \code{p_smooth_pr} and \code{p_smooth_mv} determine the hat-matrix
+creation for P-Spline smoothing. In addition to the inputs mentioned
+before, they require to provide \code{ndiff} which determines the degree
+of differentiation applied to the basis-matrix (can take any value
+between and including 1 and 2), \code{lambda} which determines the degree
+of penalization applied to the smoothing, higher values will give
+smoother weight functions. As for the other parameters, it is possible
+to provide multiple values.
 }
 \examples{
 \dontrun{
@@ -180,20 +191,20 @@ for (t in 1:T) {
 model <- online(
     y = matrix(y),
     experts = experts,
-    p_smooth_lambda = 10
+    tau = prob_grid,
+    p_smooth_pr = list(lambda = 10)
 )
 
 print(model)
 plot(model)
-autoplot(model)
 
 new_y <- matrix(rnorm(1)) # Realized
 new_experts <- experts[T, , , drop = FALSE]
 
-# Update will update the model object, no need for new assignment
-update(model, new_y = new_y, new_experts = new_experts)
+# Update will update the models weights etc if you provide new realizations
+model <- update(model, new_y = new_y, new_experts = new_experts)
 
-# Use predict to combine new_experts, model$predictions will be extended
-predict(model, new_experts = new_experts)
+# Predict will expand \code{model$predictions} by default
+model <- predict(model, new_experts = new_experts, update_model = TRUE)
 }
 }

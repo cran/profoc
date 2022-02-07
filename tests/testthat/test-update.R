@@ -39,21 +39,25 @@ model_partial <- online(
     experts = experts[1:10, , , drop = FALSE],
     trace = FALSE
 )
+model_partial <- update(
+    object = model_partial,
+    new_y = matrix(y[11:15]), new_experts = experts[11:15, , , drop = FALSE]
+)
+# %%
 
-model_partial <- update(model_partial, new_y = matrix(y[11:15]), new_experts = experts[11:15, , , drop = FALSE])
-
+# %%
 model_partial <- update(model_partial, new_y = matrix(y[16:20]), new_experts = experts[16:20, , , drop = FALSE])
 # %%
 
 # %% Models should now be identical
-identical(model_partial, model_full)
+expect_true(identical(model_partial, model_full))
 # %%
 
 # %% Asymetric updating
 model_partial <- online(
     y = matrix(y[1:5]),
-    tau = prob_grid,
     experts = experts,
+    tau = prob_grid,
     trace = FALSE
 )
 
@@ -69,7 +73,7 @@ model_partial <- update(
 # %%
 
 # %% Models should now be identical
-identical(model_partial, model_full)
+expect_true(identical(model_partial, model_full))
 # %%
 
 # %% Throw an error when insufficient amount of expert predictions is supplied

@@ -13,46 +13,6 @@ loss_grad_wrt_w <- function(expert, pred, truth, tau, loss_function, a, w) {
     .Call(`_profoc_loss_grad_wrt_w`, expert, pred, truth, tau, loss_function, a, w)
 }
 
-pmin_arma <- function(x, bound) {
-    .Call(`_profoc_pmin_arma`, x, bound)
-}
-
-pmax_arma <- function(x, bound) {
-    .Call(`_profoc_pmax_arma`, x, bound)
-}
-
-diff_cpp <- function(x, lag, differences) {
-    .Call(`_profoc_diff_cpp`, x, lag, differences)
-}
-
-get_combinations <- function(x, y, append_only, append_col) {
-    .Call(`_profoc_get_combinations`, x, y, append_only, append_col)
-}
-
-set_default <- function(input, value) {
-    .Call(`_profoc_set_default`, input, value)
-}
-
-vec2mat <- function(x, matrows, matcols) {
-    .Call(`_profoc_vec2mat`, x, matrows, matcols)
-}
-
-mat2vec <- function(x) {
-    .Call(`_profoc_mat2vec`, x)
-}
-
-online_rcpp <- function(y, experts, tau, lead_time, loss_function, loss_parameter, loss_gradient, method, param_grid, forget_past_performance, allow_quantile_crossing, w0, R0, loss_array, regret_array, trace) {
-    .Call(`_profoc_online_rcpp`, y, experts, tau, lead_time, loss_function, loss_parameter, loss_gradient, method, param_grid, forget_past_performance, allow_quantile_crossing, w0, R0, loss_array, regret_array, trace)
-}
-
-predict_online <- function(object, new_experts) {
-    .Call(`_profoc_predict_online`, object, new_experts)
-}
-
-update_online <- function(object, new_y, new_experts = as.numeric( c())) {
-    .Call(`_profoc_update_online`, object, new_y, new_experts)
-}
-
 optimize_weights <- function(truth, experts, affine = FALSE, positive = FALSE, intercept = FALSE, debias = TRUE, loss_function = "quantile", tau = 0.5, forget = 0, loss_scaling = 1) {
     .Call(`_profoc_optimize_weights`, truth, experts, affine, positive, intercept, debias, loss_function, tau, forget, loss_scaling)
 }
@@ -105,10 +65,6 @@ make_knots <- function(kstep, a = 1, deg = 3L, even = FALSE) {
     .Call(`_profoc_make_knots`, kstep, a, deg, even)
 }
 
-make_difference_matrix <- function(knots, bdiff, deg) {
-    .Call(`_profoc_make_difference_matrix`, knots, bdiff, deg)
-}
-
 make_hat_matrix <- function(x, kstep, lambda, bdiff, deg, a, even) {
     .Call(`_profoc_make_hat_matrix`, x, kstep, lambda, bdiff, deg, a, even)
 }
@@ -117,7 +73,11 @@ make_basis_matrix <- function(x, kstep, deg, a, even) {
     .Call(`_profoc_make_basis_matrix`, x, kstep, deg, a, even)
 }
 
-splines2_basis <- function(x, knots, deg) {
-    .Call(`_profoc_splines2_basis`, x, knots, deg)
+make_basis_matrix2 <- function(x, knots, deg) {
+    .Call(`_profoc_make_basis_matrix2`, x, knots, deg)
+}
+
+make_hat_matrix2 <- function(x, knots, deg, bdiff, lambda) {
+    .Call(`_profoc_make_hat_matrix2`, x, knots, deg, bdiff, lambda)
 }
 

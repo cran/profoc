@@ -23,6 +23,7 @@ for (t in 1:T) {
 model <- online(
     y = matrix(y),
     experts = experts,
+    tau = prob_grid,
     method = "boa",
     trace = FALSE
 )
@@ -31,8 +32,8 @@ model <- online(
 expect_type(model, "list")
 
 # Dimensions
-expect_true(all(dim(model$weights) == c(length(y) + 1, P, N)))
-expect_true(all(dim(model$predictions) == c(length(y), P)))
+expect_true(all(dim(model$weights) == c(length(y) + 1, 1, P, N)))
+expect_true(all(dim(model$predictions) == c(length(y),1, P)))
 
 # Missing values
 expect_true(all(!is.na(model$weights)))
@@ -46,6 +47,7 @@ expect_true(all(!is.na(model$experts_loss)))
 model <- online(
     y = matrix(y),
     experts = experts,
+    tau = prob_grid,
     method = "bewa",
     trace = FALSE
 )
@@ -54,8 +56,8 @@ model <- online(
 expect_type(model, "list")
 
 # Dimensions
-expect_true(all(dim(model$weights) == c(length(y) + 1, P, N)))
-expect_true(all(dim(model$predictions) == c(length(y), P)))
+expect_true(all(dim(model$weights) == c(length(y) + 1, 1, P, N)))
+expect_true(all(dim(model$predictions) == c(length(y), 1, P)))
 
 # Missing values
 expect_true(all(!is.na(model$weights)))
@@ -69,6 +71,7 @@ expect_true(all(!is.na(model$experts_loss)))
 model <- online(
     y = matrix(y),
     experts = experts,
+    tau = prob_grid,
     method = "ewa",
     gamma = 0.1,
     trace = FALSE
@@ -78,8 +81,8 @@ model <- online(
 expect_type(model, "list")
 
 # Dimensions
-expect_true(all(dim(model$weights) == c(length(y) + 1, P, N)))
-expect_true(all(dim(model$predictions) == c(length(y), P)))
+expect_true(all(dim(model$weights) == c(length(y) + 1, 1, P, N)))
+expect_true(all(dim(model$predictions) == c(length(y), 1, P)))
 
 # Missing values
 expect_true(all(!is.na(model$weights)))
@@ -93,6 +96,7 @@ expect_true(all(!is.na(model$experts_loss)))
 model <- online(
     y = matrix(y),
     experts = experts,
+    tau = prob_grid,
     method = "ml_poly",
     trace = FALSE
 )
@@ -101,8 +105,8 @@ model <- online(
 expect_type(model, "list")
 
 # Dimensions
-expect_true(all(dim(model$weights) == c(length(y) + 1, P, N)))
-expect_true(all(dim(model$predictions) == c(length(y), P)))
+expect_true(all(dim(model$weights) == c(length(y) + 1, 1, P, N)))
+expect_true(all(dim(model$predictions) == c(length(y), 1, P)))
 
 # Missing values
 expect_true(all(!is.na(model$weights)))

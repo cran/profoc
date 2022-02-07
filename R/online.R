@@ -12,9 +12,18 @@
 #'
 #' @template param_method
 #'
-#' @template param_basis_knot_distance_online
-#' @template param_basis_knot_distance_power
-#' @template param_basis_deg_online
+#' @param b_smooth_pr A named list determining how the B-Spline matrices for
+#' probabilistic smoothing are created. Default corresponds to no probabilistic
+#' smoothing. See details.
+#' @param p_smooth_pr A named list determining how the hat matrices  for
+#' probabilistic P-Spline smoothing are created. Default corresponds to
+#' no smoothing. See details.
+#' @param b_smooth_mv A named list determining how the B-Spline matrices  for
+#' multivariate smoothing are created. Default corresponds to no probabilistic
+#' smoothing. See details.
+#' @param p_smooth_mv A named list determining how the hat matrices  for
+#' probabilistic P-Spline smoothing are created. Default corresponds to
+#' no smoothing. See details.
 #'
 #' @param forget_regret Share of past regret not to be considered, resp. to be
 #' forgotten in every iteration of the algorithm. Defaults to 0.
@@ -24,11 +33,6 @@
 #'
 #' @template param_fixed_share
 #'
-#' @template param_p_smooth_lambda
-#' @template param_p_smooth_knot_distance
-#' @template param_p_smooth_knot_distance_power
-#' @template param_p_smooth_deg
-#' @template param_p_smooth_ndiff
 #'
 #' @param gamma Scaling parameter for the learning rate.
 #'
@@ -38,8 +42,11 @@
 #'
 #' @template param_allow_quantile_crossing
 #'
-#' @param init A named list containing "init_weights": Matrix of dimension 1xK or PxK used as starting weights. 1xK represents the constant solution with equal weights over all P, whereas specifying a PxK matrix allows different starting weights for each P. "R0" a matrix of dimension PxK or 1xK used as starting regret.
-#' @param loss User specified loss array. Can also be a list with elements "loss_array"
+#' @param init A named list containing "init_weights": Array of dimension
+#' DxPxK used as starting weights. "R0" a matrix of dimension PxK or 1xK
+#' used as starting regret.
+#' @param loss User specified loss array. Can also be a list with elements
+#' "loss_array"
 #' and "share", share mixes the provided loss with the loss calculated by
 #' profoc. 1 means, only the provided loss will be used. share can also be
 #' vector of shares to consider.
@@ -49,6 +56,8 @@
 #' profoc. 1 means, only the provided regret will be used. share can also be
 #' vector of shares to consider.
 #' @template param_trace
+#'
+#' @template details_online
 #'
 #' @examples
 #' \dontrun{
@@ -67,42 +76,66 @@
 #' model <- online(
 #'     y = matrix(y),
 #'     experts = experts,
-#'     p_smooth_lambda = 10
+#'     tau = prob_grid,
+#'     p_smooth_pr = list(lambda = 10)
 #' )
 #'
 #' print(model)
 #' plot(model)
-#' autoplot(model)
 #'
 #' new_y <- matrix(rnorm(1)) # Realized
 #' new_experts <- experts[T, , , drop = FALSE]
 #'
-#' # Update will update the model object, no need for new assignment
-#' update(model, new_y = new_y, new_experts = new_experts)
+#' # Update will update the models weights etc if you provide new realizations
+#' model <- update(model, new_y = new_y, new_experts = new_experts)
 #'
-#' # Use predict to combine new_experts, model$predictions will be extended
-#' predict(model, new_experts = new_experts)
+#' # Predict will expand \code{model$predictions} by default
+#' model <- predict(model, new_experts = new_experts, update_model = TRUE)
 #' }
+#' @importFrom abind asub
 #' @export
-online <- function(y, experts,
-                   tau = 1:dim(experts)[2] / (dim(experts)[2] + 1),
+online <- function(y, experts, tau,
                    lead_time = 0,
                    loss_function = "quantile",
                    loss_parameter = 1,
                    loss_gradient = TRUE,
                    method = "bewa",
-                   basis_knot_distance = 1 / (dim(experts)[2] + 1),
-                   basis_knot_distance_power = 1,
-                   basis_deg = 1,
+                   b_smooth_pr = list(
+                       knots = P,
+                       beta_a = 1,
+                       beta_b = 1,
+                       deg = 1,
+                       outer = TRUE
+                   ),
+                   p_smooth_pr = list(
+                       knots = P,
+                       beta_a = 1,
+                       beta_b = 1,
+                       deg = 1,
+                       outer = TRUE,
+                       ndiff = 1.5,
+                       lambda = -Inf
+                   ),
+                   b_smooth_mv = list(
+                       knots = D,
+                       beta_a = 1,
+                       beta_b = 1,
+                       deg = 1,
+                       outer = TRUE
+                   ),
+                   p_smooth_mv = list(
+                       knots = D,
+                       beta_a = 1,
+                       beta_b = 1,
+                       deg = 1,
+                       outer = TRUE,
+                       ndiff = 1.5,
+                       lambda = -Inf
+                   ),
                    forget_regret = 0,
                    soft_threshold = -Inf,
                    hard_threshold = -Inf,
                    fixed_share = 0,
-                   p_smooth_lambda = -Inf,
-                   p_smooth_knot_distance = basis_knot_distance,
-                   p_smooth_knot_distance_power = basis_knot_distance_power,
-                   p_smooth_deg = basis_deg,
-                   p_smooth_ndiff = 1.5,
                    gamma = 1,
                    parametergrid_max_combinations = 100,
                    parametergrid = NULL,
@@ -112,10 +145,76 @@ online <- function(y, experts,
                    loss = NULL,
                    regret = NULL,
                    trace = TRUE) {
-    if (ncol(y) > 1 & !allow_quantile_crossing) {
-        warning("Warning: allow_quantile_crossing set to true since multivariate prediction target was provided.")
-        # Bool is set inside C++
+    model_instance <- new(conline)
+    model_instance$trace <- trace
+    model_instance$tau <- tau
+
+    edim <- dim(experts)
+
+    if (is.vector(y)) {
+        y <- matrix(y)
     }
+
+    model_instance$y <- y
+
+    # preserve names
+    names <- list(y = dimnames(y))
+    names$experts <- list(NULL)
+
+    if (length(edim) == 3) {
+        enames <- dimnames(experts)[[3]]
+        if (is.null(enames)) {
+            enames <- paste0("E", 1:edim[3])
+        }
+        if (ncol(y) > 1) { # multivariate point
+            if (is.null(dimnames(experts)[[2]])) {
+                dnames <- paste0("D", 1:edim[2])
+            } else {
+                dnames <- dimnames(experts)[[2]]
+            }
+            experts <- array(
+                unlist(experts),
+                dim = c(edim[1], edim[2], 1, edim[3])
+            )
+            experts <- lapply(seq_len(edim[1]),
+                asub,
+                x = experts,
+                dims = 1,
+                drop = TRUE
+            )
+            dim(experts) <- c(edim[1], 1)
+            model_instance$experts <- experts
+        } else if (ncol(y) == 1) { # univariate probabilistic
+            dnames <- "D1"
+            experts <- lapply(seq_len(edim[1]),
+                asub,
+                x = experts,
+                dims = 1,
+                drop = FALSE
+            )
+            dim(experts) <- c(edim[1], 1)
+            model_instance$experts <- experts
+        }
+    } else if (length(edim) == 4) { # multivariate probabilistic
+        if (is.null(dimnames(experts)[[2]])) {
+            dnames <- paste0("D", 1:edim[2])
+        } else {
+            dnames <- dimnames(experts)[[2]]
+        }
+        enames <- dimnames(experts)[[4]]
+        if (is.null(enames)) {
+            enames <- paste0("E", 1:edim[4])
+        }
+        experts <- array_to_list(experts)
+        model_instance$experts <- experts
+    }
+    names$experts[[2]] <- dnames
+    names$experts[[4]] <- enames
+
+    T <- dim(experts)[1]
+    D <- dim(experts[[1]])[1]
+    P <- dim(experts[[1]])[2]
+    K <- dim(experts[[1]])[3]
 
     if (nrow(experts) - nrow(y) < 0) {
         stop("Number of provided expert predictions has to match or exceed observations.")
@@ -125,83 +224,122 @@ online <- function(y, experts,
         stop("Number of expert predictions need to exceed lead_time.")
     }
 
+    if (is.null(names$y[[2]])) names$y[[2]] <- paste0(1:D, "D")
+
+    model_instance$lead_time <- lead_time
+
     if (is.null(loss)) {
-        loss_array <- array(, dim = c(0, 0, 0))
         loss_share <- 0
     } else if (is.array(loss)) {
-        loss_array <- loss
+        loss_array <- list()
+        for (i in 1:T) {
+            loss_array[[i]] <- array(loss[i, , , ], dim = c(D, P, K))
+        }
+        dim(loss_array) <- c(T, 1)
         loss_share <- 1
+        model_instance$loss_array <- loss_array
     } else if (is.list(loss)) {
-        loss_array <- loss$loss
+        loss_array <- list()
+        for (i in 1:T) {
+            loss_array[[i]] <- array(loss$loss[i, , , ], dim = c(D, P, K))
+        }
+        dim(loss_array) <- c(T, 1)
         loss_share <- loss$share
+        model_instance$loss_array <- loss_array
     }
 
     if (is.null(regret)) {
-        regret_array <- array(, dim = c(0, 0, 0))
         regret_share <- 0
     } else if (is.array(regret)) {
-        regret_array <- regret
+        regret_array <- list()
+        for (i in 1:T) {
+            regret_array[[i]] <- array(regret[i, , , ], dim = c(D, P, K))
+        }
+        dim(regret_array) <- c(T, 1)
         regret_share <- 1
+        model_instance$regret_array <- regret_array
     } else if (is.list(regret)) {
-        regret_array <- regret$regret
+        regret_array <- list()
+        for (i in 1:T) {
+            regret_array[[i]] <- array(regret$regret[i, , , ],
+                dim = c(D, P, K)
+            )
+        }
+        dim(regret_array) <- c(T, 1)
         regret_share <- regret$share
+        model_instance$regret_array <- regret_array
     }
 
+    # Create basis and hat matix lists
+
+    # # Basis matrices for probabilistic smoothing
+    tmp <- make_basis_mats(
+        x = 1:P / (P + 1),
+        n = val_or_def(b_smooth_pr$knots, P),
+        beta_a = val_or_def(b_smooth_pr$beta_a, 1),
+        beta_b = val_or_def(b_smooth_pr$beta_b, 1),
+        deg = val_or_def(b_smooth_pr$deg, 1),
+        outer = val_or_def(b_smooth_pr$outer, TRUE)
+    )
+    model_instance$basis_pr <- tmp$basis
+    model_instance$params_basis_pr <- tmp$params
+
+
+    # Basis matrices for multivariate smoothing
+    tmp <- make_basis_mats(
+        x = 1:D / (D + 1),
+        n = val_or_def(b_smooth_mv$knots, D),
+        beta_a = val_or_def(b_smooth_mv$beta_a, 1),
+        beta_b = val_or_def(b_smooth_mv$beta_b, 1),
+        deg = val_or_def(b_smooth_mv$deg, 1),
+        outer = val_or_def(b_smooth_mv$outer, TRUE)
+    )
+    model_instance$basis_mv <- tmp$basis
+    model_instance$params_basis_mv <- tmp$params
+
+    tmp <- make_hat_mats(
+        x = 1:P / (P + 1),
+        n = val_or_def(p_smooth_pr$knots, P),
+        beta_a = val_or_def(p_smooth_pr$beta_a, 1),
+        beta_b = val_or_def(p_smooth_pr$beta_b, 1),
+        deg = val_or_def(p_smooth_pr$deg, 1),
+        outer = val_or_def(p_smooth_pr$outer, TRUE),
+        diff = val_or_def(p_smooth_pr$diff, 1.5),
+        lambda = val_or_def(p_smooth_pr$lambda, -Inf)
+    )
+    model_instance$hat_pr <- tmp$hat
+    model_instance$params_hat_pr <- tmp$params
+
+    tmp <- make_hat_mats(
+        x = 1:D / (D + 1),
+        n = val_or_def(p_smooth_mv$knots, D),
+        beta_a = val_or_def(p_smooth_mv$beta_a, 1),
+        beta_b = val_or_def(p_smooth_mv$beta_b, 1),
+        deg = val_or_def(p_smooth_mv$deg, 1),
+        outer = val_or_def(p_smooth_mv$outer, TRUE),
+        diff = val_or_def(p_smooth_mv$diff, 1.5),
+        lambda = val_or_def(p_smooth_mv$lambda, -Inf)
+    )
+    model_instance$hat_mv <- tmp$hat
+    model_instance$params_hat_mv <- tmp$params
+
+
     if (is.null(parametergrid)) {
-        if (missing(p_smooth_knot_distance)) {
-            p_smooth_knot_distance <- 0
-            inh_kstep <- TRUE
-        } else {
-            inh_kstep <- FALSE
-        }
-
-        if (missing(p_smooth_knot_distance_power)) {
-            p_smooth_knot_distance_power <- 0
-            inh_kstep_p <- TRUE
-        } else {
-            inh_kstep_p <- FALSE
-        }
-
-        if (missing(p_smooth_deg)) {
-            p_smooth_deg <- 0
-            inh_deg <- TRUE
-        } else {
-            inh_deg <- FALSE
-        }
-
         grid <- expand.grid(
-            basis_knot_distance,
-            basis_knot_distance_power,
-            basis_deg,
-            forget_regret,
-            soft_threshold,
-            hard_threshold,
-            fixed_share,
-            p_smooth_lambda,
-            p_smooth_knot_distance,
-            p_smooth_knot_distance_power,
-            p_smooth_deg,
-            p_smooth_ndiff,
-            gamma,
-            loss_share,
-            regret_share
+            basis_pr_idx = (seq_len(dim(model_instance$basis_pr)[1])),
+            forget_regret = forget_regret,
+            soft_threshold = soft_threshold,
+            hard_threshold = hard_threshold,
+            fixed_share = fixed_share,
+            hat_pr_idx = (seq_len(dim(model_instance$hat_pr)[1])),
+            hat_mv_idx = (seq_len(dim(model_instance$hat_mv)[1])),
+            gamma = gamma,
+            loss_share = loss_share,
+            regret_share = regret_share,
+            basis_mv_idx = (seq_len(dim(model_instance$basis_mv)[1]))
         )
 
-        if (inh_kstep) {
-            grid[, 9] <- grid[, 1]
-        }
-
-        if (inh_kstep_p) {
-            grid[, 10] <- grid[, 2]
-        }
-
-        if (inh_deg) {
-            grid[, 11] <- grid[, 3]
-        }
-
         parametergrid <- as.matrix(grid)
-    } else if (ncol(parametergrid) != 15) {
-        stop("Please provide a parametergrid with 15 columns.")
     }
 
     if (nrow(parametergrid) > parametergrid_max_combinations) {
@@ -218,70 +356,42 @@ online <- function(y, experts,
         ), ]
     }
 
-    if (is.null(init$init_weights)) {
-        init$init_weights <- matrix(
-            1 / dim(experts)[[3]],
-            nrow = dim(experts)[[2]],
-            ncol = dim(experts)[[3]]
-        )
-    } else if (nrow(init$init_weights) == 1) {
-        init$init_weights <- matrix(init$init_weights,
-            nrow = dim(experts)[[2]],
-            ncol = dim(experts)[[3]],
-            byrow = TRUE
-        )
-    } else if (
-        (nrow(init$init_weights) != 1 &
-            nrow(init$init_weights) != dim(experts)[[2]]) |
-            ncol(init$init_weights) != dim(experts)[[3]]) {
-        stop("Either a 1xK or PxK matrix of initial weights must be supplied.")
-    }
-    init$init_weights <- pmax(init$init_weights, exp(-350))
-    init$init_weights <- init$init_weights / rowSums(init$init_weights)
+    model_instance$params <- parametergrid
+    model_instance$allow_quantile_crossing <- allow_quantile_crossing
+    model_instance$loss_function <- loss_function
+    model_instance$loss_gradient <- loss_gradient
+    model_instance$loss_parameter <- loss_parameter
+    model_instance$method <- method
 
-    if (is.null(init$R0)) {
-        init$R0 <- matrix(0,
-            nrow = dim(experts)[[2]],
-            ncol = dim(experts)[[3]],
-        )
-    } else if (nrow(init$R0) == 1) {
-        init$R0 <- matrix(init$R0,
-            nrow = dim(experts)[[2]],
-            ncol = dim(experts)[[3]],
-            byrow = TRUE
-        )
-    } else if (
-        (nrow(init$R0) != 1 &
-            nrow(init$R0) != dim(experts)[[2]]) |
-            ncol(init$R0) != dim(experts)[[3]]) {
-        stop("R0 must be 1xK or PxK.")
+    # Populate default values for w0, R0 etc.
+    model_instance$set_defaults()
+
+    # Overwrite defaults if user specified explicitly
+    if (!is.null(init$init_weights)) {
+        init$init_weights <- pmax(init$init_weights, exp(-350))
+        for (d in 1:D) {
+            for (p in 1:P) {
+                init$init_weights[d, p, ] <-
+                    init$init_weights[d, p, ] / sum(init$init_weights[d, p, ])
+            }
+        }
+        model_instance$w0 <- init$init_weights
     }
 
-    model <- online_rcpp(
-        y = y, experts = experts, tau = tau,
-        lead_time = lead_time,
-        loss_function = loss_function,
-        loss_parameter = loss_parameter,
-        loss_gradient = loss_gradient,
-        method = method,
-        param_grid = parametergrid,
-        forget_past_performance = forget_past_performance,
-        allow_quantile_crossing = allow_quantile_crossing,
-        w0 = init$init_weights,
-        R0 = init$R0,
-        loss_array = loss_array,
-        regret_array = regret_array,
-        trace = trace
-    )
+    if (!is.null(init$R0)) model_instance$R0 <- init$R0
 
-    dimnames(model$specification$data$y) <- dimnames(y)
+    # Populates default values to grid-sized values
+    model_instance$set_grid_objects()
 
-    dimnames(model$specification$data$experts) <- dimnames(experts)
+    # Execute online learning
+    model_instance$learn()
 
-    if (is.null(dimnames(model$specification$data$experts)[[3]])) {
-        dimnames(model$specification$data$experts)[[3]] <-
-            paste0("E", 1:dim(experts)[[3]])
-    }
+    # Generate output
+    model <- model_instance$output()
+
+    model_instance$teardown()
+    rm(model_instance)
+    model <- post_process_model(model, names)
 
     return(model)
 }
