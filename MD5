@@ -1,6 +1,6 @@
-ae7ff052fafbd5b2feb5afb920d77581 *DESCRIPTION
-deaad88ea5d14d930537c11579a7ba5b *NAMESPACE
-fb76550f73bc19c761c2cb1e7bb8ee4e *NEWS.md
+6298b40c1ec34b87948193890c9b154a *DESCRIPTION
+b7f15f6209cd4f619ffc5ba6e0580b35 *NAMESPACE
+78f50b09a8b25d2d18615f2366f069d4 *NEWS.md
 7c2af9ebaeaa4a71d2efa8da553988b9 *R/RcppExports.R
 055953e457c5eca291b903467fa39d52 *R/batch.R
 a134b18382baf2339c90775ba8944e8a *R/conline_exports.R
@@ -8,7 +8,7 @@ a134b18382baf2339c90775ba8944e8a *R/conline_exports.R
 650c2ea73cd47729ce8b38a96677cc43 *R/methods_batch.R
 b4cbc163e8b6278bdd0611d27b97e5de *R/methods_common.R
 232f526bac77f900e5edbfed8fc841f9 *R/misc.R
-2e9598d4a795c3831c5f7ad2c089c381 *R/online.R
+56dceb1a4f21e73d73a7e83f0d90f12e *R/online.R
 942d48024f446679dd394b953ff724a6 *R/online_autoplot.R
 62605f2a88fcc30e905ab698a9e4af3e *R/online_plot.R
 21dc2cd53052babeea60be4a8d6de732 *R/online_predict.R
@@ -16,9 +16,9 @@ b4cbc163e8b6278bdd0611d27b97e5de *R/methods_common.R
 69964f0446ad154db7c2da3629197518 *R/online_summary.R
 83777c2f703a151f34d1aee19829a07d *R/online_update.R
 013a672ff947bdb1a76f3671a73aadd6 *R/package.R
-1d4ea451959add6e57c8bffe11d858a6 *R/splines.R
+8abbb1f3e4df6b9b5f992f01f9aedd48 *R/splines.R
 cdba25d022d65fe41bd8170fb1e6a466 *README.md
-707e121c62efc441ebddddb2f2e5498d *build/partial.rdb
+25ea053c110550d227fd6b9b17b08751 *build/partial.rdb
 2baf1d4944b0989d062b52b2233a82ed *inst/include/clock.h
 b12c5db785b211e36106d0154a089bd1 *inst/include/conline.h
 61b0077fce7ece11127dae19b5dabffb *inst/include/loss.h
@@ -102,7 +102,7 @@ d025ba6f5ca5524da95fb1e4042a1315 *man/autoplot.batch.Rd
 d7e03c701cc3f25013e01092e586ae63 *man/autoplot.online.Rd
 2e4c7639baa4cd4071f2b1376c2e8ded *man/batch.Rd
 8dbccaabc1ae93bffc984fd1ca3e7ee3 *man/conline.Rd
-0604286de67b0e95530de3d111d3a96c *man/online.Rd
+5764af91e37adfd41f8fc3f24e3ed82a *man/online.Rd
 f01d3c0ee43f6823e06b7e7ddc8c9bec *man/oracle.Rd
 73d7c251757ddd7441f5ec95618d9830 *man/plot.batch.Rd
 f0649ff92e47f1f3ff179d2c4cd7efc8 *man/plot.online.Rd
@@ -128,12 +128,13 @@ e8b3fade7ba92e991eefd961021ec186 *tests/testthat/test-combination_sampling.R
 5d970dac2cceabb5cd1cc80334d739ba *tests/testthat/test-grids.R
 7db8f4683416674df9f9899eaee86580 *tests/testthat/test-init_weights.R
 2730dc14b01dc8de1d586aebce216012 *tests/testthat/test-inputs.R
+91168495127c172550db70190aa6a8d2 *tests/testthat/test-knots.R
 1321f9b14c71e70964063af1e0bcd3c8 *tests/testthat/test-lead.R
 2dd823212d8ddcbb7593df96ebd62364 *tests/testthat/test-losses.R
 f587a087b2cf58ea12f13bb0c47f4dba *tests/testthat/test-methods.R
-9a38efcd00bdc2085a4cbea874c21623 *tests/testthat/test-online_constant.R
+4f4232eb6aeb2bf85b56f61a1bd00be1 *tests/testthat/test-online_constant.R
 83930b5e0db588f4111b43155c3031bd *tests/testthat/test-oracle.R
-bd0f7f07dfe19140f17a35a4ed3a7eb1 *tests/testthat/test-output.R
+63f5260d2b3515bbd1749cf6e94f35c5 *tests/testthat/test-output.R
 2a8ba64d0087ca405cd1592f321450e4 *tests/testthat/test-predict.R
 7a827af59b05abe7f11c0b5f499b2007 *tests/testthat/test-quantile_crossing.R
 247d26b88667cdb6cd5067245c04338b *tests/testthat/test-regret_array.R

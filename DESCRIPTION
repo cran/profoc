@@ -1,8 +1,8 @@
 Package: profoc
 Type: Package
 Title: Probabilistic Forecast Combination Using CRPS Learning
-Version: 0.9.0
-Date: 2022-02-07
+Version: 0.9.1
+Date: 2022-02-25
 Authors@R: c(
     person(given = "Jonathan",
              family = "Berrisch",
@@ -28,9 +28,9 @@ RoxygenNote: 7.1.2
 Suggests: testthat (>= 3.0.0), gamlss.dist, ggplot2
 Config/testthat/edition: 3
 NeedsCompilation: yes
-Packaged: 2022-02-07 10:32:17 UTC; vscode
+Packaged: 2022-02-25 10:05:30 UTC; vscode
 Author: Jonathan Berrisch [cre] (<https://orcid.org/0000-0002-4944-9074>),
   Florian Ziel [aut] (<https://orcid.org/0000-0002-2974-2660>)
 Maintainer: Jonathan Berrisch <Jonathan@Berrisch.biz>
 Repository: CRAN
-Date/Publication: 2022-02-07 11:00:02 UTC
+Date/Publication: 2022-02-25 10:20:02 UTC
