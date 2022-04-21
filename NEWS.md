@@ -1,18 +1,26 @@
-profoc 0.9.2 (Release date: 17.03.2022)
+profoc 0.9.3
+==============
+
+## Fixes:
+
+* `forget_past_performance` had no effect in `online()` 
+* Improved and fixed documentation
+
+profoc 0.9.2
 ==============
 
 ## Fixes:
 
 * Resolved a problem with plotting multivariate probabilistic models
 
-profoc 0.9.1 (Release date: 25.02.2022)
+profoc 0.9.1
 ==============
 
 ## Changes:
 
 * Basis matrices are created differently now. This solves an issue where basis functions did not always sum to 1 when non-equidistant knot sequences were used.
 
-profoc 0.9.0 (Release date: 07.02.2022)
+profoc 0.9.0
 ==============
 
 ## Changes:
@@ -27,7 +35,7 @@ profoc 0.9.0 (Release date: 07.02.2022)
 * `online` uses Rcpp Modules to bundle data and functionality into an exposed C++ class
 * Improvements to plot methods
 
-profoc 0.8.5 (Release date: 22.10.2021)
+profoc 0.8.5
 ==============
 
 ## Changes:
@@ -40,12 +48,12 @@ profoc 0.8.5 (Release date: 22.10.2021)
 * Internal changes to improve readability
 * Resolve C++ compilation warnings
 
-profoc 0.8.4 (Release date: 2021-09-15)
+profoc 0.8.4
 ==============
 
 * Remove unused C++17 dependency
 
-profoc 0.8.3 (Release date: 2021-08-15)
+profoc 0.8.3
 ==============
 
 ## Changes:
@@ -62,7 +70,7 @@ profoc 0.8.3 (Release date: 2021-08-15)
 
 * Changes to the splines2 package required some changes on our side. This affected the creation of the b-spline basis. See https://github.com/BerriJ/profoc/pull/3
 
-profoc 0.8.0 (Release date: 2021-07-27)
+profoc 0.8.0
 ==============
 
 ## Changes:
@@ -82,7 +90,7 @@ profoc 0.8.0 (Release date: 2021-07-27)
 * The b-spline basis is now calculated using a fast C++ function imported from the [splines2](https://github.com/wenjie2wang/splines2) R package.
 * The source code is now distributed across different files.
 
-profoc 0.7.0 (Release date: 2021-06-04)
+profoc 0.7.0
 ==============
 
 ## Changes:
@@ -100,7 +108,7 @@ The spline functions where rewritten to add the ability of using a non-equidista
 
 * Functions for calculating the b-spline basis are now exported to R as internal functions of the package. They can be accessed using the `package:::function` notation.
 
-profoc 0.6.0 (Release date: 2021-03-04)
+profoc 0.6.0
 ==============
 
 ## Changes:
@@ -120,12 +128,12 @@ profoc 0.6.0 (Release date: 2021-03-04)
 
 * If more expert forecasts than observations are provided, the excessive expert forecasts are used for prediction using the most recent weights.
 * `tau` is now optional. It defaults to 1:P/(P+1). A scalar given to tau will be repeated P times. The latter is useful in multivariate settings.
-* The pinball_loss and loss_pred functions were replaced by a more flexible function called `loss`.
+* The `pinball_loss` and `loss_pred` functions were replaced by a more flexible function called `loss`.
 * The `weights` object is changed from a $(\text{T}+1 \times \text{K} \times \text{P})$ array to a $(\text{T}+1 \times \text{P} \times \text{K})$ array to match other objects' dimensions. Now the following indexing scheme is consistent throughout the package: (Time, Probabilities, Experts, Parameter combination)
 * Fixed Bug that caused single quantile calculations to fail.
 * Various internal changes to improve readability and performance.
 
-profoc 0.5.2 (Release date: 2021-01-29)
+profoc 0.5.2
 ==============
 
 ## Changes:
