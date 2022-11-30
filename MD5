@@ -1,14 +1,14 @@
-7e9078dd16e8d88fd5549741ab3a8101 *DESCRIPTION
+b77586d846de5fda1278149a8deb4e9d *DESCRIPTION
 b7f15f6209cd4f619ffc5ba6e0580b35 *NAMESPACE
-fc9f85e11902084f37ce275d6857c938 *NEWS.md
+bf502106bc2d3a1775098041862d6425 *NEWS.md
 7c2af9ebaeaa4a71d2efa8da553988b9 *R/RcppExports.R
 6ffe0374056bdc8413dd985792656301 *R/batch.R
 445ac56539025181dbaf758f161eb5a6 *R/conline_exports.R
 882b2aa78061bc386cd178ac3b153111 *R/cppclock.R
 650c2ea73cd47729ce8b38a96677cc43 *R/methods_batch.R
 2667753208cc1a49ef5599bf4032e413 *R/methods_common.R
-232f526bac77f900e5edbfed8fc841f9 *R/misc.R
-dd6f5bfab21882ea1a52c6bc094d9cb7 *R/online.R
+15fbb6c2a6bac7acfe492048e4300f78 *R/misc.R
+6e26e65e6aec03adce60ad1b9ae04a59 *R/online.R
 942d48024f446679dd394b953ff724a6 *R/online_autoplot.R
 35ac457092f811338933036406dbed9d *R/online_plot.R
 8114e74e68561eb6147514cbebf4f77c *R/online_predict.R
@@ -16,9 +16,9 @@ dd6f5bfab21882ea1a52c6bc094d9cb7 *R/online.R
 69964f0446ad154db7c2da3629197518 *R/online_summary.R
 4ffd004381838c7e4196454874097d77 *R/online_update.R
 013a672ff947bdb1a76f3671a73aadd6 *R/package.R
-8abbb1f3e4df6b9b5f992f01f9aedd48 *R/splines.R
+afcd1a52116d0de12fa2d1351cc7e566 *R/splines.R
 cdba25d022d65fe41bd8170fb1e6a466 *README.md
-304c1488e7cf79e854d5a86560d29b8c *build/partial.rdb
+aa794694cd8b19f62daecaf00e7197bf *build/partial.rdb
 2baf1d4944b0989d062b52b2233a82ed *inst/include/clock.h
 b12c5db785b211e36106d0154a089bd1 *inst/include/conline.h
 61b0077fce7ece11127dae19b5dabffb *inst/include/loss.h
@@ -102,7 +102,7 @@ d025ba6f5ca5524da95fb1e4042a1315 *man/autoplot.batch.Rd
 d7e03c701cc3f25013e01092e586ae63 *man/autoplot.online.Rd
 da7574ce5075ed8b8ac873815efc1c5e *man/batch.Rd
 61a245fbb50ea83351e7c18b9cc20b4f *man/conline.Rd
-3505be8660e883696f226b3440e70801 *man/online.Rd
+f5e175b06fdb345e8e7b55ee73f2506a *man/online.Rd
 f01d3c0ee43f6823e06b7e7ddc8c9bec *man/oracle.Rd
 73d7c251757ddd7441f5ec95618d9830 *man/plot.batch.Rd
 f0649ff92e47f1f3ff179d2c4cd7efc8 *man/plot.online.Rd
@@ -116,7 +116,7 @@ fd259c258d2c534d7682f0b0bbe3f17b *src/Makevars
 b23b26bcce23643dcad09c580a67f558 *src/Makevars.win
 afacd05b68e02d40e6933bd5074fa76b *src/RcppExports.cpp
 8746eee3baf984f0739c5a33415ba291 *src/batch.cpp
-b921b3237b9825ceaa482943cb7f0229 *src/conline.cpp
+a0efefb75315d3cccbb61b1f4d2cc515 *src/conline.cpp
 9777776ce2b48264889b8aadcb6b7049 *src/conline_exports.cpp
 7d004b2a2408a77b298b12072d432955 *src/loss.cpp
 ec9a8c1c81138c2a1307dd5c87e9e282 *src/oracle.cpp
@@ -124,8 +124,8 @@ ec9a8c1c81138c2a1307dd5c87e9e282 *src/oracle.cpp
 13d24bcbff74548856143b4214c5ce73 *src/splines.cpp
 fca6fb299aee10b9aa65ccd4cb80bdfb *tests/testthat.R
 87f443ea4c91347cbffa0674a56dbb88 *tests/testthat/setup.R
-e8b3fade7ba92e991eefd961021ec186 *tests/testthat/test-combination_sampling.R
-ad1e892f16ef3134b9e999986ec83201 *tests/testthat/test-grids.R
+b087124b9d811cb1e2be88e2b31c7e49 *tests/testthat/test-combination_sampling.R
+4fcc7dd401537af385728deecb70d0b2 *tests/testthat/test-grids.R
 7db8f4683416674df9f9899eaee86580 *tests/testthat/test-init_weights.R
 2730dc14b01dc8de1d586aebce216012 *tests/testthat/test-inputs.R
 beb8f3a145f613f79537775220ec521b *tests/testthat/test-knots.R
@@ -144,5 +144,5 @@ f587a087b2cf58ea12f13bb0c47f4dba *tests/testthat/test-methods.R
 9275393b8864c22a89b981c156bf7730 *tests/testthat/test-threshold_batch.R
 328e9dfec1c60b6d3f6437913102b16b *tests/testthat/test-threshold_online.R
 bfa012f5152b635b8eb365d95e640c39 *tests/testthat/test-update.R
-da33c7e5af2985f55dfd93473d24793e *tests/testthat/test-user_supplied_grid.R
+3a9f071b31c3ddb231f5e2b0e2289d20 *tests/testthat/test-user_supplied_grid.R
 15270527a373cdc9564fd846e0bbc00b *tests/testthat/test-zzz_debug.R
