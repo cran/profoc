@@ -1,8 +1,8 @@
 Package: profoc
 Type: Package
 Title: Probabilistic Forecast Combination Using CRPS Learning
-Version: 0.9.4
-Date: 2022-11-30
+Version: 0.9.5
+Date: 2022-12-16
 Authors@R: c(
     person(given = "Jonathan",
              family = "Berrisch",
@@ -24,14 +24,14 @@ LinkingTo: Rcpp, RcppArmadillo (>= 0.10.7.5.0), RcppProgress, splines2
 SystemRequirements: C++11
 URL: https://profoc.berrisch.biz/, https://github.com/BerriJ/profoc
 BugReports: https://github.com/BerriJ/profoc/issues
-RoxygenNote: 7.2.1
+RoxygenNote: 7.2.2
 Language: en-US
 Suggests: testthat (>= 3.0.0), gamlss.dist, ggplot2
 Config/testthat/edition: 3
 NeedsCompilation: yes
-Packaged: 2022-11-30 18:38:40 UTC; vscode
+Packaged: 2022-12-16 10:30:08 UTC; vscode
 Author: Jonathan Berrisch [cre] (<https://orcid.org/0000-0002-4944-9074>),
   Florian Ziel [aut] (<https://orcid.org/0000-0002-2974-2660>)
 Maintainer: Jonathan Berrisch <Jonathan@Berrisch.biz>
 Repository: CRAN
-Date/Publication: 2022-11-30 19:00:02 UTC
+Date/Publication: 2022-12-16 10:50:02 UTC
