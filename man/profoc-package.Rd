@@ -5,7 +5,10 @@
 Package Info
 }
 \description{
-Use multiple online-aggregation algorithms to combine probabilistic forecasts using CRPS Learning as described in Berrisch, Ziel: "CRPS Learning", 2021. The primary function of this package is called profoc.
+Use multiple online-aggregation algorithms to combine probabilistic forecasts using CRPS Learning as described in Berrisch, Ziel: "CRPS Learning", 2021. The primary function of this package is called \code{online}.
+
+\doi{10.1016/j.jeconom.2021.11.008}
+
 }
 \details{
 

@@ -28,6 +28,8 @@ online(
   parametergrids = list(general = NULL, b_smooth_pr = NULL, p_smooth_pr = NULL,
     b_smooth_mv = NULL, p_smooth_mv = NULL),
   forget_past_performance = 0,
+  save_past_performance = FALSE,
+  save_predictions_grid = FALSE,
   allow_quantile_crossing = FALSE,
   init = NULL,
   loss = NULL,
@@ -59,7 +61,7 @@ to t+1+h at time t. The weight updates delay accordingly.}
 
 \item{method}{One of "boa", "bewa", "ml_poly" or "ewa". Where "bewa" refers to a mixture of boa and ewa, including the second
 order refinement of boa, but updating weights with the simple
- exponential weighting.}
+exponential weighting.}
 
 \item{b_smooth_pr}{A named list determining how the B-Spline matrices for
 probabilistic smoothing are created. Default corresponds to no probabilistic
@@ -126,6 +128,16 @@ corresponding smoothing matrix is used.}
 forgotten in every iteration of the algorithm when selecting the best parameter
 combination. Defaults to 0.}
 
+\item{save_past_performance}{Whether or not the past performance w.r.t to the
+considered parameter grid should be reported or not. Defaults to \code{FALSE} to
+save memory. Setting it to \code{TRUE} can be memory intensive depending on the
+data and the considered grid.}
+
+\item{save_predictions_grid}{Whether or not all predictions w.r.t to the
+considered parameter grid should be reported or not. Defaults to \code{FALSE}.
+Setting it to \code{TRUE} can be memory intensive depending on the data
+and the considered grid.}
+
 \item{allow_quantile_crossing}{Shall quantile crossing be allowed? Defaults to false, which means that predictions are sorted in ascending order.}
 
 \item{init}{A named list containing "init_weights": Array of dimension
@@ -139,7 +151,7 @@ profoc. 1 means, only the provided loss will be used. share can also be
 vector of shares to consider.}
 
 \item{regret}{User specified regret array. If specific, the regret will
- not be calculated by profoc. Can also be a list with elements "regret_array"
+not be calculated by profoc. Can also be a list with elements "regret_array"
 and "share", share mixes the provided regret with the regret calculated by
 profoc. 1 means, only the provided regret will be used. share can also be
 vector of shares to consider.}
@@ -152,6 +164,8 @@ Returns weights and corresponding predictions.
 \description{
 Returns predictions and weights calculated by online-learning algorithms
 using CRPS Learning.
+
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 }
 \details{
 online selects various parameters automatically based on
@@ -213,7 +227,8 @@ new_experts <- experts[T, , , drop = FALSE]
 # Update will update the models weights etc if you provide new realizations
 model <- update(model, new_y = new_y, new_experts = new_experts)
 
-# Predict will expand \code{model$predictions} by default
+# Predict will expand `model$predictions` by default
 model <- predict(model, new_experts = new_experts, update_model = TRUE)
 }
+
 }
