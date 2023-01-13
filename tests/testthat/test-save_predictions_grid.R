@@ -26,7 +26,7 @@ boa_smooth <- online(
     tau = prob_grid,
     experts = experts,
     p_smooth_pr = list(
-        lambda = c(10, 1000),
+        lambda = c(100, 1000),
         ndiff = c(1, 2),
         deg = c(2, 3)
     ),
@@ -40,12 +40,13 @@ osize_full <- object.size(boa_smooth$specification$objects$predictions_grid)
 
 smpl <- boa_smooth$specification$objects$predictions_grid[[563]][, 50, ]
 
-expect_true(
-    all(round(smpl, 8) ==
-        c(
-            -0.20164219, -0.09951605, 0.16404708, 0.16423461,
-            -0.19778184, -0.19708188, -0.19235012, -0.20075103
-        ))
+expect_equal(
+    smpl,
+    c(
+        -0.16726231, -0.16427737, -0.21685071, -0.22053253,
+        -0.19778184, -0.19708188, -0.19235012, -0.20075103
+    ),
+    tolerance = 0.0000001
 )
 
 expect_true(boa_smooth$specification$parameters$save_predictions_grid)
@@ -57,7 +58,7 @@ boa_smooth <- online(
     tau = prob_grid,
     experts = experts,
     p_smooth_pr = list(
-        lambda = c(10, 1000),
+        lambda = c(100, 1000),
         ndiff = c(1, 2),
         deg = c(2, 3)
     ),
@@ -70,13 +71,15 @@ osize_small <- object.size(boa_smooth$specification$objects$predictions_grid)
 
 smpl <- boa_smooth$specification$objects$predictions_grid[[1]][, 50, ]
 
-expect_true(
-    all(round(smpl, 8) ==
-        c(
-            -0.15169227, 0.07841016, 0.06198071, 0.06141661,
-            -0.03533878, -0.03516170, -0.11598618, -0.11580723
-        ))
+expect_equal(
+    smpl,
+    c(
+        -0.07082431, -0.07394584, -0.14018784, -0.13642743,
+        -0.03533878, -0.03516170, -0.11598618, -0.11580723
+    ),
+    tolerance = 0.000001
 )
+
 
 expect_false(boa_smooth$specification$parameters$save_predictions_grid)
 

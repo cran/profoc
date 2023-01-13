@@ -164,6 +164,30 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// wt_delta
+arma::sp_mat wt_delta(const arma::vec& h);
+RcppExport SEXP _profoc_wt_delta(SEXP hSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::vec& >::type h(hSEXP);
+    rcpp_result_gen = Rcpp::wrap(wt_delta(h));
+    return rcpp_result_gen;
+END_RCPP
+}
+// penalty
+arma::field<arma::sp_mat> penalty(const arma::vec& knots, const int& order, const int& max_diff);
+RcppExport SEXP _profoc_penalty(SEXP knotsSEXP, SEXP orderSEXP, SEXP max_diffSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::vec& >::type knots(knotsSEXP);
+    Rcpp::traits::input_parameter< const int& >::type order(orderSEXP);
+    Rcpp::traits::input_parameter< const int& >::type max_diff(max_diffSEXP);
+    rcpp_result_gen = Rcpp::wrap(penalty(knots, order, max_diff));
+    return rcpp_result_gen;
+END_RCPP
+}
 // make_hat_matrix
 arma::sp_mat make_hat_matrix(const arma::vec& x, const double& kstep, const double& lambda, const double& bdiff, const int deg, const double& a, const bool& even);
 RcppExport SEXP _profoc_make_hat_matrix(SEXP xSEXP, SEXP kstepSEXP, SEXP lambdaSEXP, SEXP bdiffSEXP, SEXP degSEXP, SEXP aSEXP, SEXP evenSEXP) {
@@ -236,6 +260,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_profoc_optimize_betas", (DL_FUNC) &_profoc_optimize_betas, 13},
     {"_profoc_oracle", (DL_FUNC) &_profoc_oracle, 10},
     {"_profoc_make_knots", (DL_FUNC) &_profoc_make_knots, 4},
+    {"_profoc_wt_delta", (DL_FUNC) &_profoc_wt_delta, 1},
+    {"_profoc_penalty", (DL_FUNC) &_profoc_penalty, 3},
     {"_profoc_make_hat_matrix", (DL_FUNC) &_profoc_make_hat_matrix, 7},
     {"_profoc_make_basis_matrix", (DL_FUNC) &_profoc_make_basis_matrix, 5},
     {"_profoc_make_basis_matrix2", (DL_FUNC) &_profoc_make_basis_matrix2, 3},
