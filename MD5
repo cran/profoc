@@ -1,6 +1,6 @@
-aeb4e8bd95309232609cbf0f1d60ea10 *DESCRIPTION
+f6871542707e2b8cccd7de5ad051d292 *DESCRIPTION
 6c58f7a68945263c79e3ce2aed75e64b *NAMESPACE
-57d2e7f45ee4b9c6a58f58a1e27b50d7 *NEWS.md
+d87c66fb4e5c9df59d4e6ef627b94b45 *NEWS.md
 6285c4b0a9656b15259aaca9898395df *R/RcppExports.R
 1606482d54e64b8d22f09b54eb3ee9ff *R/batch.R
 445ac56539025181dbaf758f161eb5a6 *R/conline_exports.R
@@ -16,9 +16,10 @@ a3eec40f8ffeb4af2cf316d59d04c916 *R/misc.R
 69964f0446ad154db7c2da3629197518 *R/online_summary.R
 0f28024a5175139c5317cff6d3ebb028 *R/online_update.R
 32e14ec269a9851da7b942e66267954d *R/package.R
-1441cfaa80cd7c6f2e161ae000815ca5 *R/splines.R
+51c9e621ef4bfd80c10fc8671072a985 *R/splines.R
 1aaf8f071c5cf2c8c840f0245bf30ffb *README.md
-6c4f74bcffcf5ed1d6a8aee478352ce3 *build/partial.rdb
+b6e7cc04f442c011cd7bd0e7bf121c5b *build/partial.rdb
+31cbffb0908a59b1f561bb93acf705d4 *inst/CITATION
 2baf1d4944b0989d062b52b2233a82ed *inst/include/clock.h
 dbc42cae6c0f0b8b5198f158aba439b5 *inst/include/conline.h
 61b0077fce7ece11127dae19b5dabffb *inst/include/loss.h
@@ -121,8 +122,8 @@ c633a3b999ef7f96f71e29b38db109b0 *man/print.batch.Rd
 443cbe372243a9bdb9b9be5578985b31 *man/profoc-package.Rd
 56761536d5cee382403fa836e2ec653a *man/summary.online.Rd
 7ff2f87fd4d2bf15c8793d8431ae7875 *man/update.online.Rd
-fd259c258d2c534d7682f0b0bbe3f17b *src/Makevars
-b23b26bcce23643dcad09c580a67f558 *src/Makevars.win
+cc5511b3a6ec234cf8810c1419b641b9 *src/Makevars
+e99c712f8776360b3cdc363021761ebd *src/Makevars.win
 d50825f6e295224b73f84e90b19c6695 *src/RcppExports.cpp
 8746eee3baf984f0739c5a33415ba291 *src/batch.cpp
 ba14c5a66e54d13888d14aa2a7e5a7a1 *src/conline.cpp
