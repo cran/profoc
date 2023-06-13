@@ -7,10 +7,23 @@ pgbeta <- function(x, mu = .5, sig = 1, nonc = 0) {
     return(seq_beta)
 }
 
+#' Create a vector of knots for splines
+#'
+#' This function creates a knot vector for splines. The knots are distributed
+#' according to a beta distribution. The first input defines the number of inner
+#' knots. The total number of knots is \code{n + 2 * order}.
+#'
+#' @param n Number of knots
+#' @param mu Beta distribution location parameter
+#' @param sig Beta distribution scale parameter
+#' @param nonc Beta distribution noncentrality parameter
+#' @param tailw Tailweight
+#' @param deg Degree of splines
 #' @importFrom stats pbeta
 #' @importFrom utils head
 #' @importFrom utils tail
-make_knots2 <- function(n, mu = .5, sig = 1, nonc = 0, tailw = 1, deg = 1) {
+#' @export
+make_knots <- function(n, mu = .5, sig = 1, nonc = 0, tailw = 1, deg = 1) {
     if (n < 0) {
         return(NULL)
     }
@@ -31,6 +44,7 @@ make_basis_mats <- function(x, # Splines basis
                             nonc = 0, # (vec of) Beta dist. noncentrality
                             tailw = 1, # (vec of) Tailweight
                             deg = 1, # (vec of) Degree of splines
+                            periodic = FALSE, # Create periodic splines
                             idx = NULL,
                             params = NULL) {
     if (is.null(params)) {
@@ -41,7 +55,8 @@ make_basis_mats <- function(x, # Splines basis
                 sigma = sigma,
                 nonc = nonc,
                 tailw = tailw,
-                deg = deg
+                deg = deg,
+                periodic = periodic
             ),
             idx = idx
         )
@@ -57,7 +72,7 @@ make_basis_mats <- function(x, # Splines basis
         n_ <- n_ - (deg_ + 1) + 2
         if (n_ < 0) {
             if (deg_ + n_ >= 1) {
-                print("n too small reduce deg_ by n-(deg_+1)")
+                print("n too small reduce deg by n-(deg+1)")
                 deg_ <- deg_ + n_
                 n_ <- 0
             } else {
@@ -65,7 +80,7 @@ make_basis_mats <- function(x, # Splines basis
             }
         }
 
-        knots <- make_knots2(
+        knots <- make_knots(
             n = n_,
             mu = params[i, "mu"],
             sig = params[i, "sigma"],
@@ -77,10 +92,11 @@ make_basis_mats <- function(x, # Splines basis
         if (is.null(knots)) {
             basis_list[[i]] <- Matrix::Matrix(rep.int(1, length(x)), sparse = TRUE)
         } else {
-            basis_list[[i]] <- make_basis_matrix2(
+            basis_list[[i]] <- make_basis_matrix(
                 x = x,
                 knots = knots,
-                deg = deg_
+                deg = deg_,
+                periodic = params[i, "periodic"]
             )
         }
     }
@@ -99,6 +115,7 @@ make_hat_mats <- function(x,
                           deg = 1,
                           ndiff = 1.5,
                           lambda = -Inf,
+                          periodic = FALSE,
                           idx = NULL,
                           params = NULL) {
     if (is.null(params)) {
@@ -111,7 +128,8 @@ make_hat_mats <- function(x,
                 tailw = tailw,
                 deg = deg,
                 ndiff = ndiff,
-                lambda = lambda
+                lambda = lambda,
+                periodic = periodic
             ),
             idx = idx
         )
@@ -137,7 +155,7 @@ make_hat_mats <- function(x,
             }
         }
 
-        knots <- make_knots2(
+        knots <- make_knots(
             n = n_,
             mu = params[i, "mu"],
             sig = params[i, "sigma"],
@@ -147,12 +165,13 @@ make_hat_mats <- function(x,
         )
 
         if (params[i, "lambda"] != -Inf) {
-            hat_list[[i]] <- make_hat_matrix2(
+            hat_list[[i]] <- make_hat_matrix(
                 x = x,
                 knots = knots,
                 deg = deg_,
                 bdiff = params[i, "ndiff"],
-                lambda = params[i, "lambda"]
+                lambda = params[i, "lambda"],
+                periodic = params[i, "periodic"]
             )
         } else {
             hat_list[[i]] <- Matrix::sparseMatrix(
