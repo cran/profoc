@@ -1,4 +1,4 @@
-## ---- include = FALSE---------------------------------------------------------
+## ----include = FALSE----------------------------------------------------------
 knitr::opts_chunk$set(
   collapse = TRUE,
   # dev = "svg",
@@ -11,6 +11,7 @@ Sys.setenv("OMP_THREAD_LIMIT" = 2)
 ## -----------------------------------------------------------------------------
 set.seed(1)
 T <- 2^5 # Observations
+D <- 1 # Numer of variables
 N <- 2 # Experts
 P <- 99 # Size of probability grid
 probs <- 1:P / (P + 1)
@@ -28,7 +29,7 @@ for (t in 1:T) {
   experts[t, , 2] <- qnorm(probs, mean = experts_mu[2], sd = experts_sd[2])
 }
 
-## ---- echo = FALSE, out.width='100%', fig.width=7, fig.height = 4, dpi = 300----
+## ----echo = FALSE, out.width='100%', fig.width=7, fig.height = 4, dpi = 300----
 library(ggplot2)
 library(tibble)
 
@@ -107,10 +108,10 @@ print(combination)
 ## -----------------------------------------------------------------------------
 dim(combination$weights)
 
-## ---- echo = TRUE, out.width='100%', fig.width=7, fig.height = 4, dpi = 300----
+## ----echo = TRUE, out.width='100%', fig.width=7, fig.height = 4, dpi = 300----
 autoplot(combination)
 
-## ---- echo = TRUE, out.width='100%', fig.width=7, fig.height = 4, dpi = 300----
+## ----echo = TRUE, out.width='100%', fig.width=7, fig.height = 4, dpi = 300----
 library(dplyr)
 library(ggplot2)
 
@@ -120,7 +121,7 @@ tidy(combination$weights) |>
   geom_line(linewidth = 1) +
   facet_wrap(~p, ncol = 1)
 
-## ---- echo = TRUE, out.width='100%', fig.width=7, fig.height = 4, dpi = 300----
+## ----echo = TRUE, out.width='100%', fig.width=7, fig.height = 4, dpi = 300----
 tidy(combination$predictions)
 
 tidy(combination$predictions) |>
