@@ -12,7 +12,7 @@
 
 <meta name="author" content="Jonathan Berrisch" />
 
-<meta name="date" content="2024-03-25" />
+<meta name="date" content="2024-09-21" />
 
 <title>Using the C++ Interface</title>
 
@@ -29,46 +29,31 @@ document.addEventListener('DOMContentLoaded', function(e) {
   }
 });
 </script>
-<script>// Hide empty <a> tag within highlighted CodeBlock for screen reader accessibility (see https://github.com/jgm/pandoc/issues/6352#issuecomment-626106786) -->
-// v0.0.1
-// Written by JooYoung Seo (jooyoung@psu.edu) and Atsushi Yasumoto on June 1st, 2020.
-
-document.addEventListener('DOMContentLoaded', function() {
-  const codeList = document.getElementsByClassName("sourceCode");
-  for (var i = 0; i < codeList.length; i++) {
-    var linkList = codeList[i].getElementsByTagName('a');
-    for (var j = 0; j < linkList.length; j++) {
-      if (linkList[j].innerHTML === "") {
-        linkList[j].setAttribute('aria-hidden', 'true');
-      }
-    }
-  }
-});
-</script>
 
 <style type="text/css">
-  code{white-space: pre-wrap;}
-  span.smallcaps{font-variant: small-caps;}
-  span.underline{text-decoration: underline;}
-  div.column{display: inline-block; vertical-align: top; width: 50%;}
-  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-  ul.task-list{list-style: none;}
-    </style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
 
 
 
 <style type="text/css">
-  code {
-    white-space: pre;
-  }
-  .sourceCode {
-    overflow: visible;
-  }
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
 </style>
 <style type="text/css" data-origin="pandoc">
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
 div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
@@ -80,55 +65,54 @@ pre > code.sourceCode { white-space: pre-wrap; }
 pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
-  { counter-reset: source-line 0; }
+{ counter-reset: source-line 0; }
 pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
+{ position: relative; left: -4em; counter-increment: source-line; }
 pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    color: #aaaaaa;
-  }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
 div.sourceCode
-  {   }
+{ }
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
 </style>
 <script>
 // apply pandoc div.sourceCode style to pre.sourceCode instead
@@ -356,104 +340,142 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 <h1 class="title toc-ignore">Using the C++ Interface</h1>
 <h4 class="author">Jonathan Berrisch</h4>
-<h4 class="date">2024-03-25</h4>
+<h4 class="date">2024-09-21</h4>
 
 
 
 <div id="introduction" class="section level2">
 <h2>Introduction</h2>
-<p>All major parts of <code>online()</code> are implemented in C++ for speed. Usually, this comes at the cost of flexibility. However, the profoc package exposes a C++ class <code>conline</code> that allows you to gain fine grained control over objects.<br />
-<code>online()</code> wraps this class and provides a convenient interface for the most common use cases. However, if you need to alter object initialization (i.e. provide custom basis / hat matrices for smoothing) you can use the C++ class directly from R. This vignette shows how to do this.</p>
-<p>Note that we will reuse the data from <code>vignette(&quot;profoc&quot;)</code>.</p>
+<p>All major parts of <code>online()</code> are implemented in C++ for
+speed. Usually, this comes at the cost of flexibility. However, the
+profoc package exposes a C++ class <code>conline</code> that allows you
+to gain fine grained control over objects.<br />
+<code>online()</code> wraps this class and provides a convenient
+interface for the most common use cases. However, if you need to alter
+object initialization (i.e. provide custom basis / hat matrices for
+smoothing) you can use the C++ class directly from R. This vignette
+shows how to do this.</p>
+<p>Note that we will reuse the data from
+<code>vignette(&quot;profoc&quot;)</code>.</p>
 </div>
 <div id="online-learning-with-conline" class="section level2">
 <h2>Online learning with <code>conline</code></h2>
-<p>First, we need to create a new instance of the c++ class. This can be done by calling <code>new(conline)</code>.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="kw">library</span>(profoc)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a>model &lt;-<span class="st"> </span><span class="kw">new</span>(conline)</span></code></pre></div>
-<p>Now we need to pass the data to the class instance. The whole list of accessible field can be printed with <code>names(model)</code>. Most of them have defaults.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a>model<span class="op">$</span>y &lt;-<span class="st"> </span>y</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a>tau &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">:</span>P <span class="op">/</span><span class="st"> </span>(P <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a>model<span class="op">$</span>tau &lt;-<span class="st"> </span>tau</span></code></pre></div>
-<p>The experts array is a bit more complicated. C++ expects us to pass a list of arrays. Thereby, the list itself must have dimension <code>Tx1</code> and the elements of the list (the arrays) <code>D x P x K</code>. For convenience we can use <code>init_experts_list()</code> to create such a list from our experts array. Note that we must pass the true observations as well. They are used to detect whether the data is univariate (<code>T x 1</code> matrix) or multivariate (<code>T x D</code> matrix).</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a>experts_list &lt;-<span class="st"> </span><span class="kw">init_experts_list</span>(experts, y)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>model<span class="op">$</span>experts &lt;-<span class="st"> </span>experts_list</span></code></pre></div>
-<p>Now suppose we want to alter the smoothing behavior across quantiles. We start by creating a new hat matrix.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a>hat &lt;-<span class="st"> </span><span class="kw">make_hat_mats</span>(</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a>  <span class="dt">x =</span> tau,</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true"></a>  <span class="dt">mu =</span> <span class="fl">0.2</span>, <span class="co"># Put more knots in the lower tail</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true"></a>  <span class="dt">periodic =</span> <span class="ot">TRUE</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true"></a>)</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true"></a><span class="kw">str</span>(hat)</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true"></a><span class="co">#&gt; List of 2</span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true"></a><span class="co">#&gt;  $ hat   :List of 1</span></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true"></a><span class="co">#&gt;   ..$ :Formal class &#39;dgCMatrix&#39; [package &quot;Matrix&quot;] with 6 slots</span></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true"></a><span class="co">#&gt;   .. .. ..@ i       : int [1:99] 0 1 2 3 4 5 6 7 8 9 ...</span></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true"></a><span class="co">#&gt;   .. .. ..@ p       : int [1:100] 0 1 2 3 4 5 6 7 8 9 ...</span></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true"></a><span class="co">#&gt;   .. .. ..@ Dim     : int [1:2] 99 99</span></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true"></a><span class="co">#&gt;   .. .. ..@ Dimnames:List of 2</span></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true"></a><span class="co">#&gt;   .. .. .. ..$ : NULL</span></span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true"></a><span class="co">#&gt;   .. .. .. ..$ : NULL</span></span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true"></a><span class="co">#&gt;   .. .. ..@ x       : num [1:99] 1 1 1 1 1 1 1 1 1 1 ...</span></span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true"></a><span class="co">#&gt;   .. .. ..@ factors : list()</span></span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true"></a><span class="co">#&gt;   ..- attr(*, &quot;dim&quot;)= int [1:2] 1 1</span></span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true"></a><span class="co">#&gt;  $ params: num [1, 1:9] 99 0.2 1 0 1 ...</span></span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true"></a><span class="co">#&gt;   ..- attr(*, &quot;dimnames&quot;)=List of 2</span></span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true"></a><span class="co">#&gt;   .. ..$ : NULL</span></span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true"></a><span class="co">#&gt;   .. ..$ : chr [1:9] &quot;n&quot; &quot;mu&quot; &quot;sigma&quot; &quot;nonc&quot; ...</span></span></code></pre></div>
-<p>We need a list of sparse matrices which <code>make_hat_mats()</code> returns. So we can pass that directly to our class.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a>model<span class="op">$</span>hat_pr &lt;-<span class="st"> </span>hat<span class="op">$</span>hat</span></code></pre></div>
-<p>The other smoothing matrices have to be filled with defaults (lists of sparse identity matrices). Usually <code>online()</code> takes care of this. But we can do it manually as well.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a>model<span class="op">$</span>basis_mv &lt;-<span class="st"> </span><span class="kw">list</span>(Matrix<span class="op">::</span><span class="kw">sparseMatrix</span>(<span class="dt">i =</span> <span class="dv">1</span><span class="op">:</span>D, <span class="dt">j =</span> <span class="dv">1</span><span class="op">:</span>D, <span class="dt">x =</span> <span class="dv">1</span>))</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a>model<span class="op">$</span>basis_pr &lt;-<span class="st"> </span><span class="kw">list</span>(Matrix<span class="op">::</span><span class="kw">sparseMatrix</span>(<span class="dt">i =</span> <span class="dv">1</span><span class="op">:</span>P, <span class="dt">j =</span> <span class="dv">1</span><span class="op">:</span>P, <span class="dt">x =</span> <span class="dv">1</span>))</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true"></a>model<span class="op">$</span>hat_mv &lt;-<span class="st"> </span><span class="kw">list</span>(Matrix<span class="op">::</span><span class="kw">sparseMatrix</span>(<span class="dt">i =</span> <span class="dv">1</span><span class="op">:</span>D, <span class="dt">j =</span> <span class="dv">1</span><span class="op">:</span>D, <span class="dt">x =</span> <span class="dv">1</span>))</span></code></pre></div>
-<p>Now we can specify the parameter grid. We will stick to the defaults here:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a>parametergrid &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true"></a>  <span class="kw">expand.grid</span>(</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true"></a>    <span class="dt">forget_regret =</span> <span class="dv">0</span>,</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true"></a>    <span class="dt">soft_threshold =</span> <span class="op">-</span><span class="ot">Inf</span>,</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true"></a>    <span class="dt">hard_threshold =</span> <span class="op">-</span><span class="ot">Inf</span>,</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true"></a>    <span class="dt">fixed_share =</span> <span class="dv">0</span>,</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true"></a>    <span class="dt">basis_pr_idx =</span> <span class="dv">1</span>,</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true"></a>    <span class="dt">basis_mv_idx =</span> <span class="dv">1</span>,</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true"></a>    <span class="dt">hat_pr_idx =</span> <span class="dv">1</span>,</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true"></a>    <span class="dt">hat_mv_idx =</span> <span class="dv">1</span>,</span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true"></a>    <span class="dt">gamma =</span> <span class="dv">1</span>,</span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true"></a>    <span class="dt">loss_share =</span> <span class="dv">0</span>,</span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true"></a>    <span class="dt">regret_share =</span> <span class="dv">0</span></span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true"></a>  )</span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true"></a>)</span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true"></a></span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true"></a>model<span class="op">$</span>params &lt;-<span class="st"> </span>parametergrid</span></code></pre></div>
-<p>Finally, we can run <code>model$set_defaults()</code>. This populates initial states (w0 for weights and R0 for regret).</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a>model<span class="op">$</span><span class="kw">set_defaults</span>()</span></code></pre></div>
-<p>Now <code>model$set_grid_objects()</code> will create the grid objects (performance, weights, regret etc.)</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true"></a>model<span class="op">$</span><span class="kw">set_grid_objects</span>()</span></code></pre></div>
-<p>Finally, we can run <code>model$learn()</code> to start the learning process.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true"></a>model<span class="op">$</span><span class="kw">learn</span>()</span></code></pre></div>
+<p>First, we need to create a new instance of the c++ class. This can be
+done by calling <code>new(conline)</code>.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">library</span>(profoc)</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">new</span>(conline)</span></code></pre></div>
+<p>Now we need to pass the data to the class instance. The whole list of
+accessible field can be printed with <code>names(model)</code>. Most of
+them have defaults.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>model<span class="sc">$</span>y <span class="ot">&lt;-</span> y</span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>tau <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span>P <span class="sc">/</span> (P <span class="sc">+</span> <span class="dv">1</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>model<span class="sc">$</span>tau <span class="ot">&lt;-</span> tau</span></code></pre></div>
+<p>The experts array is a bit more complicated. C++ expects us to pass a
+list of arrays. Thereby, the list itself must have dimension
+<code>Tx1</code> and the elements of the list (the arrays)
+<code>D x P x K</code>. For convenience we can use
+<code>init_experts_list()</code> to create such a list from our experts
+array. Note that we must pass the true observations as well. They are
+used to detect whether the data is univariate (<code>T x 1</code>
+matrix) or multivariate (<code>T x D</code> matrix).</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>experts_list <span class="ot">&lt;-</span> <span class="fu">init_experts_list</span>(experts, y)</span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>model<span class="sc">$</span>experts <span class="ot">&lt;-</span> experts_list</span></code></pre></div>
+<p>Now suppose we want to alter the smoothing behavior across quantiles.
+We start by creating a new hat matrix.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>hat <span class="ot">&lt;-</span> <span class="fu">make_hat_mats</span>(</span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>  <span class="at">x =</span> tau,</span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>  <span class="at">mu =</span> <span class="fl">0.2</span>, <span class="co"># Put more knots in the lower tail</span></span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>  <span class="at">periodic =</span> <span class="cn">TRUE</span></span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>)</span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a><span class="fu">str</span>(hat)</span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a><span class="co">#&gt; List of 2</span></span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a><span class="co">#&gt;  $ hat   :List of 1</span></span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a><span class="co">#&gt;   ..$ :Formal class &#39;dgCMatrix&#39; [package &quot;Matrix&quot;] with 6 slots</span></span>
+<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a><span class="co">#&gt;   .. .. ..@ i       : int [1:99] 0 1 2 3 4 5 6 7 8 9 ...</span></span>
+<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a><span class="co">#&gt;   .. .. ..@ p       : int [1:100] 0 1 2 3 4 5 6 7 8 9 ...</span></span>
+<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a><span class="co">#&gt;   .. .. ..@ Dim     : int [1:2] 99 99</span></span>
+<span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a><span class="co">#&gt;   .. .. ..@ Dimnames:List of 2</span></span>
+<span id="cb4-14"><a href="#cb4-14" tabindex="-1"></a><span class="co">#&gt;   .. .. .. ..$ : NULL</span></span>
+<span id="cb4-15"><a href="#cb4-15" tabindex="-1"></a><span class="co">#&gt;   .. .. .. ..$ : NULL</span></span>
+<span id="cb4-16"><a href="#cb4-16" tabindex="-1"></a><span class="co">#&gt;   .. .. ..@ x       : num [1:99] 1 1 1 1 1 1 1 1 1 1 ...</span></span>
+<span id="cb4-17"><a href="#cb4-17" tabindex="-1"></a><span class="co">#&gt;   .. .. ..@ factors : list()</span></span>
+<span id="cb4-18"><a href="#cb4-18" tabindex="-1"></a><span class="co">#&gt;   ..- attr(*, &quot;dim&quot;)= int [1:2] 1 1</span></span>
+<span id="cb4-19"><a href="#cb4-19" tabindex="-1"></a><span class="co">#&gt;  $ params: num [1, 1:9] 99 0.2 1 0 1 ...</span></span>
+<span id="cb4-20"><a href="#cb4-20" tabindex="-1"></a><span class="co">#&gt;   ..- attr(*, &quot;dimnames&quot;)=List of 2</span></span>
+<span id="cb4-21"><a href="#cb4-21" tabindex="-1"></a><span class="co">#&gt;   .. ..$ : NULL</span></span>
+<span id="cb4-22"><a href="#cb4-22" tabindex="-1"></a><span class="co">#&gt;   .. ..$ : chr [1:9] &quot;n&quot; &quot;mu&quot; &quot;sigma&quot; &quot;nonc&quot; ...</span></span></code></pre></div>
+<p>We need a list of sparse matrices which <code>make_hat_mats()</code>
+returns. So we can pass that directly to our class.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>model<span class="sc">$</span>hat_pr <span class="ot">&lt;-</span> hat<span class="sc">$</span>hat</span></code></pre></div>
+<p>The other smoothing matrices have to be filled with defaults (lists
+of sparse identity matrices). Usually <code>online()</code> takes care
+of this. But we can do it manually as well.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>model<span class="sc">$</span>basis_mv <span class="ot">&lt;-</span> <span class="fu">list</span>(Matrix<span class="sc">::</span><span class="fu">sparseMatrix</span>(<span class="at">i =</span> <span class="dv">1</span><span class="sc">:</span>D, <span class="at">j =</span> <span class="dv">1</span><span class="sc">:</span>D, <span class="at">x =</span> <span class="dv">1</span>))</span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>model<span class="sc">$</span>basis_pr <span class="ot">&lt;-</span> <span class="fu">list</span>(Matrix<span class="sc">::</span><span class="fu">sparseMatrix</span>(<span class="at">i =</span> <span class="dv">1</span><span class="sc">:</span>P, <span class="at">j =</span> <span class="dv">1</span><span class="sc">:</span>P, <span class="at">x =</span> <span class="dv">1</span>))</span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>model<span class="sc">$</span>hat_mv <span class="ot">&lt;-</span> <span class="fu">list</span>(Matrix<span class="sc">::</span><span class="fu">sparseMatrix</span>(<span class="at">i =</span> <span class="dv">1</span><span class="sc">:</span>D, <span class="at">j =</span> <span class="dv">1</span><span class="sc">:</span>D, <span class="at">x =</span> <span class="dv">1</span>))</span></code></pre></div>
+<p>Now we can specify the parameter grid. We will stick to the defaults
+here:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a>parametergrid <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(</span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>  <span class="fu">expand.grid</span>(</span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a>    <span class="at">forget_regret =</span> <span class="dv">0</span>,</span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a>    <span class="at">soft_threshold =</span> <span class="sc">-</span><span class="cn">Inf</span>,</span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a>    <span class="at">hard_threshold =</span> <span class="sc">-</span><span class="cn">Inf</span>,</span>
+<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a>    <span class="at">fixed_share =</span> <span class="dv">0</span>,</span>
+<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a>    <span class="at">basis_pr_idx =</span> <span class="dv">1</span>,</span>
+<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a>    <span class="at">basis_mv_idx =</span> <span class="dv">1</span>,</span>
+<span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a>    <span class="at">hat_pr_idx =</span> <span class="dv">1</span>,</span>
+<span id="cb7-10"><a href="#cb7-10" tabindex="-1"></a>    <span class="at">hat_mv_idx =</span> <span class="dv">1</span>,</span>
+<span id="cb7-11"><a href="#cb7-11" tabindex="-1"></a>    <span class="at">gamma =</span> <span class="dv">1</span>,</span>
+<span id="cb7-12"><a href="#cb7-12" tabindex="-1"></a>    <span class="at">loss_share =</span> <span class="dv">0</span>,</span>
+<span id="cb7-13"><a href="#cb7-13" tabindex="-1"></a>    <span class="at">regret_share =</span> <span class="dv">0</span></span>
+<span id="cb7-14"><a href="#cb7-14" tabindex="-1"></a>  )</span>
+<span id="cb7-15"><a href="#cb7-15" tabindex="-1"></a>)</span>
+<span id="cb7-16"><a href="#cb7-16" tabindex="-1"></a></span>
+<span id="cb7-17"><a href="#cb7-17" tabindex="-1"></a>model<span class="sc">$</span>params <span class="ot">&lt;-</span> parametergrid</span></code></pre></div>
+<p>Finally, we can run <code>model$set_defaults()</code>. This populates
+initial states (w0 for weights and R0 for regret).</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>model<span class="sc">$</span><span class="fu">set_defaults</span>()</span></code></pre></div>
+<p>Now <code>model$set_grid_objects()</code> will create the grid
+objects (performance, weights, regret etc.)</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a>model<span class="sc">$</span><span class="fu">set_grid_objects</span>()</span></code></pre></div>
+<p>Finally, we can run <code>model$learn()</code> to start the learning
+process.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a>model<span class="sc">$</span><span class="fu">learn</span>()</span></code></pre></div>
 </div>
 <div id="accessing-the-results" class="section level2">
 <h2>Accessing the results</h2>
-<p>The learning process fills the class objects. So we can inspect them using the <code>$</code> operator, like we would with any other R object. For example, we can access the weights:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true"></a><span class="kw">head</span>(model<span class="op">$</span>weights[[T]][, , <span class="dv">1</span>])</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true"></a><span class="co">#&gt; [1] 0.4892732 0.4058720 0.5979021 0.5770314 0.5487374 0.6287706</span></span></code></pre></div>
-<p>However, we can also use the post processing function of <code>online()</code> to access the results. This will create output that is identical to the output of <code>online()</code>:</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true"></a>names &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">y =</span> <span class="kw">dimnames</span>(y))</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true"></a>names<span class="op">$</span>experts &lt;-<span class="st"> </span><span class="kw">list</span>(</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true"></a>  <span class="dv">1</span><span class="op">:</span>T,</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true"></a>  <span class="kw">paste</span>(<span class="st">&quot;Marginal&quot;</span>, <span class="dv">1</span><span class="op">:</span>D),</span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true"></a>  tau,</span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true"></a>  <span class="kw">paste</span>(<span class="st">&quot;Expert&quot;</span>, <span class="dv">1</span><span class="op">:</span>N)</span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true"></a>)</span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true"></a></span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true"></a>output &lt;-<span class="st"> </span><span class="kw">post_process_model</span>(model, names)</span></code></pre></div>
-<p>We can now use <code>output</code> in <code>update()</code>, <code>plot()</code> and others.</p>
-<p>At this point, we do not need to keep the model in memory anymore. So we can delete it:</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true"></a><span class="kw">rm</span>(model)</span></code></pre></div>
+<p>The learning process fills the class objects. So we can inspect them
+using the <code>$</code> operator, like we would with any other R
+object. For example, we can access the weights:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="fu">head</span>(model<span class="sc">$</span>weights[[T]][, , <span class="dv">1</span>])</span>
+<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a><span class="co">#&gt; [1] 0.4892732 0.4058720 0.5979021 0.5770314 0.5487374 0.6287706</span></span></code></pre></div>
+<p>However, we can also use the post processing function of
+<code>online()</code> to access the results. This will create output
+that is identical to the output of <code>online()</code>:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a>names <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">y =</span> <span class="fu">dimnames</span>(y))</span>
+<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a>names<span class="sc">$</span>experts <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a>  <span class="dv">1</span><span class="sc">:</span>T,</span>
+<span id="cb12-4"><a href="#cb12-4" tabindex="-1"></a>  <span class="fu">paste</span>(<span class="st">&quot;Marginal&quot;</span>, <span class="dv">1</span><span class="sc">:</span>D),</span>
+<span id="cb12-5"><a href="#cb12-5" tabindex="-1"></a>  tau,</span>
+<span id="cb12-6"><a href="#cb12-6" tabindex="-1"></a>  <span class="fu">paste</span>(<span class="st">&quot;Expert&quot;</span>, <span class="dv">1</span><span class="sc">:</span>N)</span>
+<span id="cb12-7"><a href="#cb12-7" tabindex="-1"></a>)</span>
+<span id="cb12-8"><a href="#cb12-8" tabindex="-1"></a></span>
+<span id="cb12-9"><a href="#cb12-9" tabindex="-1"></a>output <span class="ot">&lt;-</span> <span class="fu">post_process_model</span>(model, names)</span></code></pre></div>
+<p>We can now use <code>output</code> in <code>update()</code>,
+<code>plot()</code> and others.</p>
+<p>At this point, we do not need to keep the model in memory anymore. So
+we can delete it:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a><span class="fu">rm</span>(model)</span></code></pre></div>
 </div>
 <div id="summary" class="section level2">
 <h2>Summary</h2>
-<p>The C++ class <code>conline</code> allows you to gain fine grained control over the learning process. However, it is not as convenient as the <code>online()</code> wrapper. So you should only use it if you need to alter the default behavior. However, mixing up helper functions from <code>online()</code> and the C++ class is possible. So you can compute your combinations using the class interface while still being able to use <code>update()</code>, <code>plot()</code> and others afterward.</p>
+<p>The C++ class <code>conline</code> allows you to gain fine grained
+control over the learning process. However, it is not as convenient as
+the <code>online()</code> wrapper. So you should only use it if you need
+to alter the default behavior. However, mixing up helper functions from
+<code>online()</code> and the C++ class is possible. So you can compute
+your combinations using the class interface while still being able to
+use <code>update()</code>, <code>plot()</code> and others afterward.</p>
 </div>
 
 

@@ -12,7 +12,7 @@
 
 <meta name="author" content="Jonathan Berrisch" />
 
-<meta name="date" content="2024-03-25" />
+<meta name="date" content="2024-09-21" />
 
 <title>Production</title>
 
@@ -29,46 +29,31 @@ document.addEventListener('DOMContentLoaded', function(e) {
   }
 });
 </script>
-<script>// Hide empty <a> tag within highlighted CodeBlock for screen reader accessibility (see https://github.com/jgm/pandoc/issues/6352#issuecomment-626106786) -->
-// v0.0.1
-// Written by JooYoung Seo (jooyoung@psu.edu) and Atsushi Yasumoto on June 1st, 2020.
-
-document.addEventListener('DOMContentLoaded', function() {
-  const codeList = document.getElementsByClassName("sourceCode");
-  for (var i = 0; i < codeList.length; i++) {
-    var linkList = codeList[i].getElementsByTagName('a');
-    for (var j = 0; j < linkList.length; j++) {
-      if (linkList[j].innerHTML === "") {
-        linkList[j].setAttribute('aria-hidden', 'true');
-      }
-    }
-  }
-});
-</script>
 
 <style type="text/css">
-  code{white-space: pre-wrap;}
-  span.smallcaps{font-variant: small-caps;}
-  span.underline{text-decoration: underline;}
-  div.column{display: inline-block; vertical-align: top; width: 50%;}
-  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-  ul.task-list{list-style: none;}
-    </style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
 
 
 
 <style type="text/css">
-  code {
-    white-space: pre;
-  }
-  .sourceCode {
-    overflow: visible;
-  }
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
 </style>
 <style type="text/css" data-origin="pandoc">
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
 div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
@@ -80,55 +65,54 @@ pre > code.sourceCode { white-space: pre-wrap; }
 pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
-  { counter-reset: source-line 0; }
+{ counter-reset: source-line 0; }
 pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
+{ position: relative; left: -4em; counter-increment: source-line; }
 pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    color: #aaaaaa;
-  }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
 div.sourceCode
-  {   }
+{ }
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
 </style>
 <script>
 // apply pandoc div.sourceCode style to pre.sourceCode instead
@@ -356,58 +340,90 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 <h1 class="title toc-ignore">Production</h1>
 <h4 class="author">Jonathan Berrisch</h4>
-<h4 class="date">2024-03-25</h4>
+<h4 class="date">2024-09-21</h4>
 
 
 
 <div id="using-online-in-production" class="section level1">
 <h1>Using <code>online</code> in Production</h1>
-<p>This vignette explains the use of <code>predict()</code> and <code>update()</code>. These are the two most important functions when using <code>profoc</code> in production. The <code>predict()</code> method is used to combine new expert forecasts using the most recent combination weights. This is useful if we combine new expert forecasts with the most recent combination weights, but new observations have yet to be realized. At a later point, <code>update()</code> can be used to update the combination weights by evaluating the realized observations. We assume that you followed the <code>vignette(&quot;profoc&quot;)</code> already. We will reuse the data and the model from there.</p>
+<p>This vignette explains the use of <code>predict()</code> and
+<code>update()</code>. These are the two most important functions when
+using <code>profoc</code> in production. The <code>predict()</code>
+method is used to combine new expert forecasts using the most recent
+combination weights. This is useful if we combine new expert forecasts
+with the most recent combination weights, but new observations have yet
+to be realized. At a later point, <code>update()</code> can be used to
+update the combination weights by evaluating the realized observations.
+We assume that you followed the <code>vignette(&quot;profoc&quot;)</code> already.
+We will reuse the data and the model from there.</p>
 <div id="combining-new-expert-predictions" class="section level2">
 <h2>Combining new expert predictions</h2>
 <p>First, we create new expert predictions:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a>new_experts &lt;-<span class="st"> </span>experts[T, , , drop =<span class="st"> </span><span class="ot">FALSE</span>]</span></code></pre></div>
-<p>The default behavior of <code>predict()</code> updates the <code>combination</code> object. So, it can later be used to update the combination weights as realized values emerge. That is, <code>predict()</code> expands <code>combination$predictions</code> and returns the updated <code>combination</code>.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="kw">dim</span>(combination<span class="op">$</span>predictions)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a><span class="co">#&gt; [1] 32  1 99</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true"></a><span class="co"># Predict will expand combination$predictions</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true"></a>combination &lt;-<span class="st"> </span><span class="kw">predict</span>(combination,</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true"></a>  <span class="dt">new_experts =</span> new_experts</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true"></a>)</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true"></a></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true"></a><span class="kw">dim</span>(combination<span class="op">$</span>predictions)</span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true"></a><span class="co">#&gt; [1] 33  1 99</span></span></code></pre></div>
-<p>If you are only interested in the predictions, you can set <code>update_model = FALSE</code>. In this case, <code>predict()</code> solely returns the predictions:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a>predictions &lt;-<span class="st"> </span><span class="kw">predict</span>(combination,</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>  <span class="dt">new_experts =</span> new_experts,</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a>  <span class="dt">update_model =</span> <span class="ot">FALSE</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true"></a>)</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true"></a></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true"></a><span class="kw">dim</span>(predictions)</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true"></a><span class="co">#&gt; [1]  1  1 99</span></span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a>new_experts <span class="ot">&lt;-</span> experts[T, , , drop <span class="ot">=</span> <span class="cn">FALSE</span>]</span></code></pre></div>
+<p>The default behavior of <code>predict()</code> updates the
+<code>combination</code> object. So, it can later be used to update the
+combination weights as realized values emerge. That is,
+<code>predict()</code> expands <code>combination$predictions</code> and
+returns the updated <code>combination</code>.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="fu">dim</span>(combination<span class="sc">$</span>predictions)</span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="co">#&gt; [1] 32  1 99</span></span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a><span class="co"># Predict will expand combination$predictions</span></span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>combination <span class="ot">&lt;-</span> <span class="fu">predict</span>(combination,</span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a>  <span class="at">new_experts =</span> new_experts</span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a>)</span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a><span class="fu">dim</span>(combination<span class="sc">$</span>predictions)</span>
+<span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a><span class="co">#&gt; [1] 33  1 99</span></span></code></pre></div>
+<p>If you are only interested in the predictions, you can set
+<code>update_model = FALSE</code>. In this case, <code>predict()</code>
+solely returns the predictions:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>predictions <span class="ot">&lt;-</span> <span class="fu">predict</span>(combination,</span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>  <span class="at">new_experts =</span> new_experts,</span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>  <span class="at">update_model =</span> <span class="cn">FALSE</span></span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>)</span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a><span class="fu">dim</span>(predictions)</span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a><span class="co">#&gt; [1]  1  1 99</span></span></code></pre></div>
 </div>
 <div id="updating-the-model-weights" class="section level2">
 <h2>Updating the model weights</h2>
-<p>As new realizations emerge, we can update the combination weights. This is done by <code>update()</code>. That is, <code>update()</code> expands <code>combination$weights</code> and returns the updated <code>combination</code>.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="co"># New observation</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a>new_y &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">rnorm</span>(<span class="dv">1</span>))</span></code></pre></div>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a><span class="kw">dim</span>(combination<span class="op">$</span>weights)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a><span class="co">#&gt; [1] 33  1 99  2</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true"></a></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true"></a><span class="co"># Model Update</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true"></a>combination &lt;-</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true"></a><span class="st">  </span><span class="kw">update</span>(combination,</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true"></a>    <span class="dt">new_y =</span> new_y</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true"></a>  )</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true"></a></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true"></a><span class="kw">dim</span>(combination<span class="op">$</span>weights)</span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true"></a><span class="co">#&gt; [1] 34  1 99  2</span></span></code></pre></div>
+<p>As new realizations emerge, we can update the combination weights.
+This is done by <code>update()</code>. That is, <code>update()</code>
+expands <code>combination$weights</code> and returns the updated
+<code>combination</code>.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="co"># New observation</span></span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>new_y <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">rnorm</span>(<span class="dv">1</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="fu">dim</span>(combination<span class="sc">$</span>weights)</span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="co">#&gt; [1] 33  1 99  2</span></span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a><span class="co"># Model Update</span></span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a>combination <span class="ot">&lt;-</span></span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a>  <span class="fu">update</span>(combination,</span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a>    <span class="at">new_y =</span> new_y</span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a>  )</span>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a></span>
+<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a><span class="fu">dim</span>(combination<span class="sc">$</span>weights)</span>
+<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a><span class="co">#&gt; [1] 34  1 99  2</span></span></code></pre></div>
 </div>
 <div id="summary-on-predict-and-update" class="section level2">
 <h2>Summary on <code>predict()</code> and <code>update()</code></h2>
-<p>As seen above, <code>predict()</code> and <code>update()</code> are closely related and usually called sequentially. In an only setting, we want to calculate the forecast (the combination) as soon as new expert predictions emerge. For that, we can use <code>predict()</code>. Later, as new observations are realized, we can <code>update()</code> the combination weights.</p>
-<p>We designed to also work in non-standard scenarios. So if, for example, experts provide multi-step-ahead predictions, we can use <code>predict()</code> to combine all of them using the most recent combination weights. Afterward, one or multiple <code>update()</code> calls can be used to update the combination weights as new observations are realized. If we want to <code>predict()</code> and <code>update()</code> simultaneously, we can do this. We can pass the new expert predictions and observations to <code>predict()</code>. This will update the combination weights and predictions with only one call to <code>predict()</code>.</p>
+<p>As seen above, <code>predict()</code> and <code>update()</code> are
+closely related and usually called sequentially. In an only setting, we
+want to calculate the forecast (the combination) as soon as new expert
+predictions emerge. For that, we can use <code>predict()</code>. Later,
+as new observations are realized, we can <code>update()</code> the
+combination weights.</p>
+<p>We designed to also work in non-standard scenarios. So if, for
+example, experts provide multi-step-ahead predictions, we can use
+<code>predict()</code> to combine all of them using the most recent
+combination weights. Afterward, one or multiple <code>update()</code>
+calls can be used to update the combination weights as new observations
+are realized. If we want to <code>predict()</code> and
+<code>update()</code> simultaneously, we can do this. We can pass the
+new expert predictions and observations to <code>predict()</code>. This
+will update the combination weights and predictions with only one call
+to <code>predict()</code>.</p>
 </div>
 </div>
 
